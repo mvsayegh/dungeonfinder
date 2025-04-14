@@ -1,6 +1,5 @@
 const GameTable = require("../models/GameTable");
 const JoinRequest = require("../models/JoinRequest");
-const { io } = require('../app');
 
 // Criar uma nova mesa (protegida)
 exports.createGameTable = async (req, res) => {
