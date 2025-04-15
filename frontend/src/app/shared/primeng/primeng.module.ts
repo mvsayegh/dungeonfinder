@@ -96,6 +96,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
   ],
   exports: [
     FormsModule,
+    CommonModule,
     ReactiveFormsModule,
     FieldsetModule,
     InputMaskModule,

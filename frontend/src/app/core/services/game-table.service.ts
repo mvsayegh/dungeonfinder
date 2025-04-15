@@ -10,7 +10,7 @@ export class GameTableService {
 
   constructor(private http: HttpClient) {}
 
-  listAvailableTables(page = 1, limit = 10): Observable<unknown> {
+  listAvailableTables(page = 1, limit = 10): Observable<any> {
     return this.http.get(`${this.apiUrl}/available?page=${page}&limit=${limit}`);
   }
 }

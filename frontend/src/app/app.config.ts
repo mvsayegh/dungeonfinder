@@ -29,6 +29,9 @@ export const appConfig: ApplicationConfig = {
     providePrimeNG({
       theme: {
         preset: DFTheme,
+        options: {
+          darkModeSelector: false,
+        },
       },
       translation: {
         emptyMessage: 'Nenhum resultado encontrado.',
