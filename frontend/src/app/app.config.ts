@@ -2,13 +2,14 @@ import { ApplicationConfig, LOCALE_ID } from '@angular/core';
 import { provideRouter, withEnabledBlockingInitialNavigation, withInMemoryScrolling } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
-import { HTTP_INTERCEPTORS, provideHttpClient, withFetch } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
 import { appRoutes } from './app.routes';
 import { ApiBaseUrlInterceptor } from './core/middleware/api-base.interceptor';
 import { ErrorInterceptor } from './core/middleware/error.interceptor';
 import DFTheme from './themes/mytheme';
 import ptBr from '@angular/common/locales/pt';
 import { registerLocaleData } from '@angular/common';
+import { MessageService } from 'primeng/api';
 registerLocaleData(ptBr);
 
 const INTERCEPTORS = [
@@ -24,7 +25,11 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }),
       withEnabledBlockingInitialNavigation()
     ),
-    provideHttpClient(withFetch()),
+    MessageService,
+    provideHttpClient(
+      withFetch(),
+      withInterceptorsFromDi() // Isso é OBRIGATÓRIO para interceptors funcionarem com fetch
+    ),
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {

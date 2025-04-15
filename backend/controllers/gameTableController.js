@@ -50,7 +50,7 @@ exports.createGameTable = async (req, res) => {
 exports.listAvailableGameTables = async (req, res) => {
   try {
     // Pega os parâmetros de paginação da query string
-    const { page = 1, limit = 10, status = "OPEN", system, title } = req.query;
+    const { page = 1, limit = 10, status, system, title } = req.query;
 
     // Validação dos parâmetros de página e limite
     const pageNumber = parseInt(page, 10);

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -6,11 +6,21 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class GameTableService {
-  private apiUrl = 'http://localhost:5000/api/games';
-
   constructor(private http: HttpClient) {}
 
-  listAvailableTables(page = 1, limit = 10): Observable<any> {
-    return this.http.get(`${this.apiUrl}/available?page=${page}&limit=${limit}`);
+  listAvailableTables(page: number, limit: number, status?: string, system?: string, title?: string): Observable<unknown> {
+    const queryParams: Record<string, string | number> = {
+      page,
+      limit,
+      ...(status && { status }),
+      ...(system && { system }),
+      ...(title && { title }),
+    };
+
+    let params = new HttpParams();
+    Object.entries(queryParams).forEach(([key, value]) => {
+      params = params.set(key, value.toString());
+    });
+    return this.http.get(`games/available`, { params });
   }
 }

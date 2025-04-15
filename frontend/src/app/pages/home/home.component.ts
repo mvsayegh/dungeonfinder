@@ -51,10 +51,11 @@ export class HomeComponent implements OnInit {
     this.tables = []; // Clear previous tables before loading
 
     this.gameTableService
-      .listAvailableTables()
+      .listAvailableTables(1, 10, 'OPEN')
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
-        next: (response: ListTablesResponse) => {
+        next: (response: any) => {
+          console.log(response);
           this.tables = response?.gameTables || [];
           console.log('Mesas carregadas:', this.tables);
         },
