@@ -48,50 +48,63 @@ exports.createGameTable = async (req, res) => {
 
 // Listar todas as mesas disponíveis (para jogadores)
 exports.listAvailableGameTables = async (req, res) => {
-    try {
-      // Pega os parâmetros de paginação da query string
-      const { page = 1, limit = 10 } = req.query;
-  
-      // Validação dos parâmetros de página e limite
-      const pageNumber = parseInt(page, 10);
-      const pageSize = parseInt(limit, 10);
-  
-      // Se os parâmetros de página ou limite forem inválidos, retornar erro
-      if (isNaN(pageNumber) || isNaN(pageSize)) {
-        return res.status(400).json({ message: "Invalid page or limit parameter" });
-      }
-  
-      // Calcular o número de documentos a serem pulados (offset)
-      const skip = (pageNumber - 1) * pageSize;
-  
-      // Buscar as mesas abertas com a paginação
-      const gameTables = await GameTable.find({ status: "OPEN" })
-        .skip(skip) // Pular a quantidade de itens conforme a página
-        .limit(pageSize) // Limitar a quantidade de itens por página
-        .populate("gameMasterId", "name") // Adiciona informações do mestre de jogo
-        .exec();
-  
-      // Contagem total de mesas abertas (para calcular total de páginas)
-      const totalGameTables = await GameTable.countDocuments({ status: "OPEN" });
-  
-      // Calcular o número total de páginas
-      const totalPages = Math.ceil(totalGameTables / pageSize);
-  
-      // Resposta com dados da mesa e informações de paginação
-      res.json({
-        gameTables,
-        pagination: {
-          page: pageNumber,
-          limit: pageSize,
-          totalPages,
-          totalItems: totalGameTables,
-        },
-      });
-    } catch (err) {
-      res.status(500).json({ message: "Server Error", error: err.message });
+  try {
+    // Pega os parâmetros de paginação da query string
+    const { page = 1, limit = 10, status = "OPEN", system, title } = req.query;
+
+    // Validação dos parâmetros de página e limite
+    const pageNumber = parseInt(page, 10);
+    const pageSize = parseInt(limit, 10);
+
+    // Se os parâmetros de página ou limite forem inválidos, retornar erro
+    if (isNaN(pageNumber) || isNaN(pageSize)) {
+      return res
+        .status(400)
+        .json({ message: "Invalid page or limit parameter" });
     }
-  };
-  
+
+    // Calcular o número de documentos a serem pulados (offset)
+    const skip = (pageNumber - 1) * pageSize;
+
+    // Monta o filtro dinâmico
+    const filter = {};
+    if (status) {
+      filter.status = status;
+    }
+    if (system) {
+      filter.system = system;
+    }
+    if (title) {
+      filter.title = { $regex: new RegExp(title, "i") }; // busca insensível ao caso
+    }
+
+    // Buscar as mesas abertas com a paginação
+    const gameTables = await GameTable.find(filter)
+      .skip(skip) // Pular a quantidade de itens conforme a página
+      .limit(pageSize) // Limitar a quantidade de itens por página
+      .populate("gameMasterId", "name") // Adiciona informações do mestre de jogo
+      .exec();
+
+    // Contagem total de mesas abertas (para calcular total de páginas)
+    const totalGameTables = await GameTable.countDocuments(filter);
+
+    // Calcular o número total de páginas
+    const totalPages = Math.ceil(totalGameTables / pageSize);
+
+    // Resposta com dados da mesa e informações de paginação
+    res.json({
+      gameTables,
+      pagination: {
+        page: pageNumber,
+        limit: pageSize,
+        totalPages,
+        totalItems: totalGameTables,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Server Error", error: err.message });
+  }
+};
 
 // Jogador se inscreve em uma mesa
 exports.joinGameTable = async (req, res) => {
@@ -139,11 +152,9 @@ exports.requestJoinGameTable = async (req, res) => {
       status: "PENDING",
     });
     if (alreadyRequested)
-      return res
-        .status(400)
-        .json({
-          message: "You have already requested to join this game table",
-        });
+      return res.status(400).json({
+        message: "You have already requested to join this game table",
+      });
 
     const joinRequest = new JoinRequest({
       gameTableId,
