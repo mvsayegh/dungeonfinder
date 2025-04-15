@@ -45,7 +45,7 @@ import { ListboxModule } from 'primeng/listbox';
 import { AccordionModule } from 'primeng/accordion';
 import { MeterGroupModule } from 'primeng/metergroup';
 import { ProgressBarModule } from 'primeng/progressbar';
-
+import { MenubarModule } from 'primeng/menubar';
 @NgModule({
   imports: [
     FormsModule,
@@ -93,6 +93,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
     AccordionModule,
     MeterGroupModule,
     ProgressBarModule,
+    MenubarModule,
   ],
   exports: [
     FormsModule,
@@ -140,6 +141,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
     AccordionModule,
     MeterGroupModule,
     ProgressBarModule,
+    MenubarModule,
   ],
 })
 export class PrimeNgModule {}

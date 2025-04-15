@@ -1,0 +1,8 @@
+:host ::ng-deep .p-menubar {
+  background-color: #1f2937; /* Tailwind gray-800 */
+  color: white;
+}
+
+:host ::ng-deep .p-menubar .p-menuitem-link {
+  color: white;
+}

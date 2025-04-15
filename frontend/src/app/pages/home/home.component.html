@@ -1,70 +1,123 @@
-<div> <h1 class="text-3xl font-bold text-center mb-6">Mesas Abertas</h1>
+<app-header></app-header>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="max-w-screen-xl mx-auto px-4">
+  <h1 class="text-3xl font-bold text-center mb-6">Mesas Abertas</h1>
 
-    <div *ngFor="let table of tables">
-      <p-card>
-        <ng-template pTemplate="header">
-           <div class="p-4 bg-gray-100 border-b border-gray-200">
-             <h2 class="text-xl font-semibold">{{ table.title }}</h2>
-             <p class="text-sm text-gray-600">{{ table.system }}</p>
-           </div>
-        </ng-template>
+  <!-- 🔍 Filtros -->
+  <div class="mb-6 flex flex-col md:flex-row md:items-end gap-4">
+    <div class="flex-1">
+      <label for="systemDropdown" class="block font-medium mb-1">Sistema</label>
+      <p-dropdown
+        id="systemDropdown"
+        [options]="systemOptions"
+        [(ngModel)]="filters.system"
+        placeholder="Todos os sistemas"
+        optionLabel="label"
+        optionValue="value"
+        [showClear]="true"></p-dropdown>
+    </div>
 
-        <div class="p-4 space-y-2">
-          <p class="text-gray-700">{{ table.description }}</p>
-          <hr class="my-2"> <div>
-            <span class="font-medium">Mestre:</span>
-            {{ table.gameMasterId?.name || 'Desconhecido' }}
+    <div class="flex-1">
+      <label for="statusDropdown" class="block font-medium mb-1">Status</label>
+      <p-dropdown
+        id="statusDropdown"
+        [options]="statusOptions"
+        [(ngModel)]="filters.status"
+        placeholder="Todos os status"
+        optionLabel="label"
+        optionValue="value"
+        [showClear]="true"></p-dropdown>
+    </div>
+
+    <div class="flex-1">
+      <label for="titleInput" class="block font-medium mb-1">Título</label>
+      <input id="titleInput" type="text" pInputText [(ngModel)]="filters.title" placeholder="Buscar por título" class="w-full" />
+    </div>
+
+    <p-button label="Filtrar" icon="pi pi-filter" (onClick)="loadTables()" class="self-end w-full md:w-auto"></p-button>
+  </div>
+
+  <!-- Lista de mesas -->
+  <ng-container *ngIf="tables.length > 0; else noTables">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div *ngFor="let table of tables">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="p-4 bg-gray-100 border-b border-gray-200">
+              <h2 class="text-xl font-semibold">{{ table.title }}</h2>
+              <p class="text-sm text-gray-600">{{ table.system }}</p>
+            </div>
+          </ng-template>
+
+          <div class="p-4 space-y-2">
+            <p class="text-gray-700">{{ table.description }}</p>
+            <hr class="my-2" />
+            <div>
+              <span class="font-medium">Mestre:</span>
+              {{ table.gameMasterId?.name || 'Desconhecido' }}
+            </div>
+            <div>
+              <span class="font-medium">Data/Hora:</span>
+              {{ table.time | date: 'dd/MM/yyyy HH:mm' }}
+            </div>
+            <div>
+              <span class="font-medium">Vagas:</span>
+              <span
+                class="font-bold"
+                [ngClass]="{
+                  'text-green-600': (table.players?.length || 0) < table.maxPlayers,
+                  'text-red-600': (table.players?.length || 0) >= table.maxPlayers,
+                }">
+                {{ table.players?.length || 0 }}/{{ table.maxPlayers }}
+              </span>
+              <span *ngIf="(table.players?.length || 0) >= table.maxPlayers" class="text-xs text-red-500 ml-1">(Lotado)</span>
+              <span *ngIf="(table.players?.length || 0) < table.maxPlayers && table.status === 'OPEN'" class="text-xs text-green-500 ml-1"
+                >(Aberta)</span
+              >
+            </div>
+            <div>
+              <span class="font-medium">Status:</span>
+              <span
+                class="px-2 py-1 text-xs font-semibold rounded-full"
+                [ngClass]="{
+                  'bg-green-100 text-green-800': table.status === 'OPEN',
+                  'bg-yellow-100 text-yellow-800': table.status === 'WAITING',
+                  'bg-red-100 text-red-800': table.status === 'CLOSED' || table.status === 'FULL',
+                  'bg-gray-100 text-gray-800': !['OPEN', 'WAITING', 'CLOSED', 'FULL'].includes(table.status),
+                }">
+                {{ table.status }}
+              </span>
+            </div>
           </div>
-          <div>
-            <span class="font-medium">Data/Hora:</span>
-            {{ table.time | date:'dd/MM/yyyy HH:mm' }}
-          </div>
-           <div>
-            <span class="font-medium">Vagas:</span>
-            <span
-              class="font-bold"
-              [ngClass]="{
-                'text-green-600': (table.players?.length || 0) < table.maxPlayers,
-                'text-red-600': (table.players?.length || 0) >= table.maxPlayers
-              }">
-              {{ table.players?.length || 0 }}/{{ table.maxPlayers }}
-            </span>
-             <span *ngIf="(table.players?.length || 0) >= table.maxPlayers" class="text-xs text-red-500 ml-1">(Lotado)</span>
-             <span *ngIf="(table.players?.length || 0) < table.maxPlayers && table.status === 'OPEN'" class="text-xs text-green-500 ml-1">(Aberta)</span>
-             </div>
-           <div>
-            <span class="font-medium">Status:</span>
-            <span class="px-2 py-1 text-xs font-semibold rounded-full"
-            [ngClass]="{
-              'bg-green-100 text-green-800': table.status === 'OPEN',
-              'bg-yellow-100 text-yellow-800': table.status === 'WAITING',
-              'bg-red-100 text-red-800': table.status === 'CLOSED' || table.status === 'FULL',
-              'bg-gray-100 text-gray-800': !['OPEN', 'WAITING', 'CLOSED', 'FULL'].includes(table.status)
-            }">  {{ table.status }}
-      </span>
-           </div>
-        </div>
 
-        <ng-template pTemplate="footer">
-          <div class="p-4 border-t border-gray-200 flex justify-end space-x-2">
-             <p-button label="Ver Detalhes" icon="pi pi-search" styleClass="p-button-sm p-button-secondary"></p-button>
-            <p-button
+          <ng-template pTemplate="footer">
+            <div class="p-4 border-t border-gray-200 flex justify-end space-x-2">
+              <p-button label="Ver Detalhes" icon="pi pi-search" styleClass="p-button-sm p-button-secondary"></p-button>
+              <p-button
                 label="Inscrever-se"
                 icon="pi pi-user-plus"
                 styleClass="p-button-sm"
                 [disabled]="(table.players?.length || 0) >= table.maxPlayers || table.status !== 'OPEN'">
-            </p-button>
-          </div>
-        </ng-template>
-      </p-card>
+              </p-button>
+            </div>
+          </ng-template>
+        </p-card>
+      </div>
     </div>
 
-  </div>
+    <!-- Paginação Centralizada -->
+    <div class="flex justify-center mt-6">
+      <p-paginator
+        [rows]="pagination.limit"
+        [totalRecords]="pagination.totalItems"
+        [rowsPerPageOptions]="[5, 10, 20]"
+        (onPageChange)="onPageChange($event)">
+      </p-paginator>
+    </div>
+  </ng-container>
 
-  <div *ngIf="!tables || tables.length === 0" class="text-center text-gray-500 mt-10">
-    Nenhuma mesa aberta no momento.
-  </div>
-
+  <!-- Template de erro ou vazio -->
+  <ng-template #noTables>
+    <div class="text-center text-gray-500 mt-10">Nenhuma mesa encontrada com os filtros atuais.</div>
+  </ng-template>
 </div>
