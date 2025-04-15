@@ -1,0 +1,65 @@
+#!/bin/sh
+
+# --- Funções
+
+getBranchName()
+{
+	echo $(git rev-parse --abbrev-ref HEAD)
+}
+
+getCharASCII()
+{
+	echo $(printf '%d\n' "'$1")
+}
+
+PortNumber()
+{
+	port_range_start=4000
+	port_range_end=4999
+
+	chars=$(getBranchName)
+	aux=$(printf "${chars: -6}")
+
+	char_1=$(getCharASCII "${aux: 1:1}")
+	char_2=$(getCharASCII "${aux: 2:1}")
+	char_3=$(getCharASCII "${aux: 3:1}")
+	char_4=$(getCharASCII "${aux: 4:1}")
+	char_5=$(getCharASCII "${aux: 5:1}")
+	# echo "${char_1#-}:${char_2#-}:${char_3#-}:${char_4#-}:${char_5#-}"
+	# echo "${char_1}:${char_2}:${char_3}:${char_4}:${char_5}"
+
+	retorno=$((port_range_start+char_1+char_2+char_3+char_4+char_5))
+	echo $retorno
+}
+
+# --- Execução do Hook
+existeRemote=$(git ls-remote --exit-code --heads origin $(getBranchName) | wc -l)
+PORTA=$(PortNumber)
+branchName=$(getBranchName)
+if [ $existeRemote == 0 ] && [[ $branchName == release* ]]; then
+	#branch não existe no remote
+
+	#-- DEFINE environment.feature.ts
+	#echo "export const environment = {" 								> ./src/environments/environment.feature.ts
+	#echo "	language: 'pt-BR'," 										>> ./src/environments/environment.feature.ts
+	#echo "	production: false," 										>> ./src/environments/environment.feature.ts
+	#echo "	api: 'http://10.0.0.132/$PORTA/'," 							>> ./src/environments/environment.feature.ts
+	#echo "	signalR: 'http://10.0.0.132/$PORTA/',"						>> ./src/environments/environment.feature.ts
+	#echo "	recaptchaKey: '6lfazdozaaaaaappfmrojctnphjhie-4nedso1ik'," 	>> ./src/environments/environment.feature.ts
+	#echo "	googleMapsKey: 'aizasybjyz-625mf5gmhw9zhyo-avw9_2qb8njq'," 	>> ./src/environments/environment.feature.ts
+	#echo "	baseUrl: 'http://10.0.0.131/$PORTA/'," 						>> ./src/environments/environment.feature.ts
+	#echo "	debug: 'http://localhost:3000/'" 							>> ./src/environments/environment.feature.ts
+	#echo "};" 															>> ./src/environments/environment.feature.ts
+
+	#-- DEFINE config-feature.env
+	echo "ENVIRONMENT_BUILD='staging'" 		> .env.staging
+	echo "EXPOSE_PORT=$PORTA" 				>> .env.staging
+	echo "BRANCH=$(getBranchName)" 			>> .env.staging
+
+	git add .
+	git update-index --add $envDocker
+	# echo $envConfig > $envConfigContent;
+fi;
+
+# --- Finished
+exit 0

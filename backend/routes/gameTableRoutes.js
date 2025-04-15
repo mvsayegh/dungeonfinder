@@ -7,7 +7,7 @@ const gameTableController = require("../controllers/gameTableController");
 router.post("/create", authMiddleware, gameTableController.createGameTable);
 
 // Listar todas as mesas disponíveis (para jogadores)
-router.get("/available", gameTableController.listAvailableGameTables);
+router.get('/available', gameTableController.listAvailableGameTables);
 
 // Jogador se inscreve em uma mesa
 router.post("/join/:gameTableId", authMiddleware, gameTableController.joinGameTable);

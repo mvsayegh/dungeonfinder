@@ -16,6 +16,11 @@ const GameTableSchema = new mongoose.Schema({
     required: true,
     min: 1,
   },
+  status: {
+    type: String,
+    enum: ["OPEN", "CLOSED", "IN_PROGRESS"],
+    default: "OPEN"
+  },
   time: {
     type: Date,
     required: true,
