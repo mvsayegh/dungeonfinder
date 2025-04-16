@@ -1,37 +1,58 @@
-<p-panel class="flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden">
-  <div class="text-center mb-8">
-    <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Welcome to Dungeon Finder!</div>
-    <span class="text-muted-color font-medium">Sign in to continue</span>
+<app-loading *ngIf="loading"></app-loading>
+
+<div class="flex layout-dark min-h-screen">
+  <div
+    class="w-6/12 h-screen hidden md:block flex-shrink-0"
+    style="max-width: 50%; background-image: url('assets/images/login.jpg'); background-repeat: no-repeat; background-size: cover">
   </div>
 
-  <div>
-    <label for="email1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
-    <input pInputText id="email1" type="text" placeholder="Email address" class="w-full md:w-[30rem] mb-8" [(ngModel)]="email" />
+  <div class="w-full bg-[#09090b]">
+    <p-fluid class="min-h-screen text-center w-full flex items-center justify-center flex-col p-fluid" style="padding: 10%">
+      <div class="flex flex-col">
+        <div class="flex items-center mb-8">
+          <h3>Dungeon Finder</h3>
+        </div>
 
-    <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Password</label>
-    <p-password
-      id="password1"
-      [(ngModel)]="password"
-      placeholder="Password"
-      [toggleMask]="true"
-      styleClass="mb-4"
-      [fluid]="true"
-      [feedback]="false"></p-password>
+        <div class="form-container text-left" style="max-width: 320px; min-width: 270px">
+          <span class="text-2xl font-semibold mb-4 block">Login</span>
+          <form [formGroup]="loginForm" (ngSubmit)="login()" class="p-fluid">
+            <div class="field mb-4">
+              <label for="email" class="block text-sm font-medium text-surface-200">Email</label>
+              <input id="email" type="email" formControlName="email" pInputText class="w-full mt-2" placeholder="Enter your email" />
+            </div>
 
-    <div class="flex items-center justify-between mt-2 mb-8 gap-8">
-      <div class="flex items-center">
-        <p-checkbox [(ngModel)]="checked" id="rememberme1" binary class="mr-2"></p-checkbox>
-        <label for="rememberme1">Remember me</label>
+            <div class="field mb-4">
+              <label for="password" class="block text-sm font-medium text-surface-200">Password</label>
+              <p-password
+                [feedback]="false"
+                [toggleMask]="true"
+                id="password"
+                formControlName="password"
+                class="w-full mt-2"
+                placeholder="Enter your password"
+                autocomplete="off">
+              </p-password>
+            </div>
+
+            <div class="flex items-center justify-content-center">
+              <p-button
+                pRipple
+                type="submit"
+                class="w-full mb-2"
+                size="large"
+                label="Login"
+                [disabled]="loginForm.invalid"
+                [loading]="loading"></p-button>
+            </div>
+          </form>
+
+          <div class="mt-6 text-left">
+            <span> Don't have an account? <a [routerLink]="'/signup'">Register</a> </span>
+          </div>
+        </div>
       </div>
-      <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Forgot password?</span>
-    </div>
-    <p-button label="Sign In" styleClass="w-full" routerLink="/signin"></p-button>
+    </p-fluid>
   </div>
-  <div class="text-center mt-10">
-    <p class="text-gray-500 text-sm mb-4 font-medium">Don't have an account?</p>
+</div>
 
-    <div class="flex flex-col gap-3 w-full max-w-sm mx-auto">
-      <p-button label="Sign Up" styleClass="w-full bg-primary text-white font-semibold rounded-lg py-2" routerLink="/signup"> </p-button>
-    </div>
-  </div>
-</p-panel>
+<p-toast></p-toast>
