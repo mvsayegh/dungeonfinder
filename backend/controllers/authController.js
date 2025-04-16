@@ -1,9 +1,11 @@
 const authService = require("../services/authService");
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 
 exports.register = async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, password } = req.body;
   try {
-    const token = await authService.register({ name, email, password, role });
+    const token = await authService.register({ name, email, password });
     res.status(201).json({ token });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -30,8 +32,9 @@ exports.verifyEmail = async (req, res) => {
     user.verified = true;
     user.verificationToken = null;
     await user.save();
-    res.json({ message: "Email verified successfully" });
+    return res.json({ message: "Email verified successfully" });
   } catch (err) {
-    res.status(400).json({ error: "Token invalid or expired" });
+    console.error("Erro ao verificar token:", err);
+    return res.status(400).json({ error: "Token invalid or expired" });
   }
 };

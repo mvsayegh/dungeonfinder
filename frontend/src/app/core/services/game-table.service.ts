@@ -8,13 +8,14 @@ import { Observable } from 'rxjs';
 export class GameTableService {
   constructor(private http: HttpClient) {}
 
-  listAvailableTables(page: number, limit: number, status?: string, system?: string, title?: string): Observable<unknown> {
+  listAvailableTables(page: number, limit: number, status?: string, system?: string, title?: string, duration?: string): Observable<unknown> {
     const queryParams: Record<string, string | number> = {
       page,
       limit,
       ...(status && { status }),
       ...(system && { system }),
       ...(title && { title }),
+      ...(duration && { duration }),
     };
 
     let params = new HttpParams();

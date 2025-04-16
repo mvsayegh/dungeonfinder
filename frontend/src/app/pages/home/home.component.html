@@ -27,6 +27,20 @@
     </p-select>
   </div>
 
+  <div class="flex-1 min-w-[180px]">
+    <label for="durationDropdown" class="block text-sm font-medium text-gray-300 mb-1">Duração</label>
+    <p-select
+      id="durationDropdown"
+      [options]="durationOptions"
+      [(ngModel)]="filters.duration"
+      placeholder="Todas as durações"
+      optionLabel="label"
+      optionValue="value"
+      [showClear]="true"
+      appendTo="body">
+    </p-select>
+  </div>
+
   <div class="flex-1 min-w-[220px]">
     <label for="titleInput" class="block text-sm font-medium text-gray-300 mb-1">Título</label>
     <input id="titleInput" type="text" pInputText [(ngModel)]="filters.title" placeholder="Buscar por título..." />

@@ -12,14 +12,20 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
         let errorMessage = 'Ocorreu um erro desconhecido!';
+
         if (error.error) {
-          if (error.error.errors) {
-            errorMessage = Object.values(error.error.errors).flat().join('\n');
-          } else if (error.error.data) {
-            errorMessage = error.error.data;
+          if (typeof error.error === 'string') {
+            errorMessage = error.error;
+          } else if (typeof error.error.error === 'string') {
+            errorMessage = error.error.error;
           }
         }
-        this._toast.add({ severity: 'info', summary: 'Informação', detail: errorMessage });
+        this._toast.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: errorMessage,
+          life: 5000,
+        });
         return throwError(() => new Error(errorMessage));
       })
     );

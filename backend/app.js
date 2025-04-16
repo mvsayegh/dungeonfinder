@@ -31,18 +31,15 @@ app.use('/api/user', userRoutes);
 io.on('connection', (socket) => {
   console.log('A user connected: ', socket.id);
 
-  // Evento de mensagem de chat
   socket.on('sendMessage', (data) => {
-    // Envia a mensagem para todos os clientes que estão conectados a essa sala de jogo
     io.to(data.gameTableId).emit('receiveMessage', data);
   });
 
-  // Entrar na sala específica da mesa de jogo
   socket.on('joinGameTable', (gameTableId) => {
-    socket.join(gameTableId); // O jogador entra na sala da mesa
+    socket.join(gameTableId);
     console.log(`Player joined game table: ${gameTableId}`);
   });
-
+  
   socket.on('disconnect', () => {
     console.log('A user disconnected');
   });

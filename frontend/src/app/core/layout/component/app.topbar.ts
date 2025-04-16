@@ -15,6 +15,8 @@ import { PrimeNgModule } from '../../../shared/primeng/primeng.module';
     </div>
 
     <div class="layout-topbar-actions flex items-center ml-auto">
+      <p-button>Cadastrar mesa</p-button>
+      <p-button>Quero mestrar</p-button>
       <div class="relative ml-3">
         <button
           (click)="userMenu.toggle($event)"

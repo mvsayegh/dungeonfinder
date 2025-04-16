@@ -1,9 +1,10 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { sendVerificationEmail } = require("../utils/mailer");
 
 
-const register = async ({ name, email, password, role }) => {
+const register = async ({ name, email, password }) => {
   const userExists = await User.findOne({ email });
   if (userExists) throw new Error("Email already exists");
 
@@ -16,7 +17,6 @@ const register = async ({ name, email, password, role }) => {
     name,
     email,
     password: hashedPassword,
-    role,
     verificationToken,
     verified: false,
   });
@@ -24,7 +24,7 @@ const register = async ({ name, email, password, role }) => {
   // Envia e-mail
   await sendVerificationEmail(user.email, user.verificationToken, user.name);
 
-  return "Usuário registrado. Verifique seu e-mail.";
+  return "User created successfully, please check your email for verification link.";
 };
 
 const login = async ({ email, password }) => {
@@ -34,10 +34,10 @@ const login = async ({ email, password }) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) throw new Error("Invalid credentials");
 
-  if (!user.verified) throw new Error("E-mail ainda não verificado.");
+  if (!user.verified) throw new Error("Email not verified");
 
   const token = jwt.sign(
-    { id: user._id, role: user.role },
+    { id: user._id },
     process.env.JWT_SECRET,
     { expiresIn: "1d" }
   );

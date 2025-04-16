@@ -17,14 +17,6 @@ exports.createGameTable = async (req, res) => {
       time,
       duration
     } = req.body;
-
-    // Verifica se o usuário é um Mestre de Jogo (Role: GAME_MASTER)
-    if (req.user.role !== "GAME_MASTER") {
-      return res
-        .status(403)
-        .json({ message: "Only Game Masters can create tables" });
-    }
-
     const newGameTable = new GameTable({
       title,
       description,
@@ -39,12 +31,8 @@ exports.createGameTable = async (req, res) => {
       time,
       duration
     });
-
     await newGameTable.save();
-
-    res
-      .status(201)
-      .json({ message: "Game Table created successfully", newGameTable });
+    res.status(201).json({ message: "Game Table created successfully", newGameTable });
   } catch (err) {
     res.status(500).json({ message: "Server Error", error: err.message });
   }
