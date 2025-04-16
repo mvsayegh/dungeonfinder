@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, inject, OnInit } from '@angular/core';
 import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 import { GameTableService } from '../../core/services/game-table.service';
 import { finalize } from 'rxjs';
-import { HeaderComponent } from './components/header/header.component';
+import { NgClass } from '@angular/common';
 
 interface GameMaster {
   _id: string;
@@ -11,23 +12,20 @@ interface GameMaster {
 
 // Match this interface exactly to the objects INSIDE the data.gameTables array
 interface Table {
-  _id: string;
   title: string;
-  description: string;
   system: string;
-  maxPlayers: number;
-  time: string;
-  players?: [];
+  description: string;
   gameMasterId?: GameMaster;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-  status: 'OPEN' | 'CLOSED' | 'FULL' | 'WAITING' | string;
+  time: Date;
+  players?: any[];
+  image?: string;
+  maxPlayers: number;
+  status: 'OPEN' | 'WAITING' | 'CLOSED' | 'FULL' | string; // Adjust the possible status values as needed
 }
 
 @Component({
   selector: 'app-home',
-  imports: [PrimeNgModule, HeaderComponent],
+  imports: [PrimeNgModule, NgClass],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -36,6 +34,12 @@ export class HomeComponent implements OnInit {
   tables: Table[] = [];
   isLoading?: boolean = false;
   errorLoading?: boolean = false;
+
+  layout: 'grid' | 'list' = 'grid';
+  layoutOptions?: any[] = [
+    { label: 'List', value: 'list' },
+    { label: 'Grid', value: 'grid' },
+  ];
 
   pagination = {
     page: 1,
@@ -71,16 +75,14 @@ export class HomeComponent implements OnInit {
   loadTables(): void {
     this.isLoading = true;
     this.errorLoading = false;
-
     const page = this.pagination.page;
     const limit = this.pagination.limit;
-
     this.gameTableService
       .listAvailableTables(page, limit, this.filters.status, this.filters.system, this.filters.title)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: (response: any) => {
-          this.tables = response?.gameTables || [];
+          this.tables = response.gameTables;
           this.pagination.totalItems = response?.pagination?.totalItems || 0;
           this.pagination.totalPages = response?.pagination?.totalPages || 1;
         },

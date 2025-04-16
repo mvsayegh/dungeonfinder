@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -9,58 +9,82 @@ import { PrimeNgModule } from '../../../shared/primeng/primeng.module';
   selector: 'app-topbar',
   standalone: true,
   imports: [RouterModule, CommonModule, PrimeNgModule],
-  template: ` <div class="layout-topbar">
-    <div class="layout-topbar-logo-container">
-      <button class="layout-menu-button layout-topbar-action" (click)="_layoutService.onMenuToggle()">
-        <i class="pi pi-bars"></i>
-      </button>
-      <a class="layout-topbar-logo" routerLink="/">
-        <img src="assets/images/logo.svg" alt="Linker TMS" />
-      </a>
+  template: ` <div class="layout-topbar bg-gray-900 text-white shadow-md px-4 py-2">
+    <div class="layout-topbar-logo-container flex items-center">
+      <a class="layout-topbar-logo text-xl font-semibold text-white hover:text-gray-300" routerLink="/"> Dungeon Finder </a>
     </div>
 
-    <div class="layout-topbar-actions">
-      <button
-        class="layout-topbar-menu-button layout-topbar-action"
-        pStyleClass="#menu"
-        enterFromClass="hidden"
-        enterActiveClass="animate-scalein"
-        leaveToClass="hidden"
-        leaveActiveClass="animate-fadeout"
-        [hideOnOutsideClick]="true">
-        <i class="pi pi-ellipsis-v"></i>
-      </button>
+    <div class="layout-topbar-actions flex items-center ml-auto">
+      <div class="relative ml-3">
+        <button
+          (click)="userMenu.toggle($event)"
+          type="button"
+          class="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+          aria-expanded="false"
+          aria-haspopup="true">
+          <span class="sr-only">Abrir menu do usuário</span>
+          <p-avatar
+            image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+            shape="circle"
+            size="large"
+            styleClass="cursor-pointer border-2 border-transparent hover:border-primary-500 transition-colors duration-200">
+          </p-avatar>
+        </button>
 
-      <div class="layout-topbar-menu hidden lg:block" id="menu">
-        <div *ngIf="saldo" class="layout-topbar-menu-content">
-          <ng-container>
-            <p-card class="flex-1" styleClass="border border-surface shadow-none">
-              <div class="flex justify-between items-center gap-4">
-                <span
-                  class="w-8 h-8 rounded-full inline-flex justify-center items-center text-center"
-                  [style]="{ 'background-color': '#066582', color: '#ffffff' }">
-                  <i class="pi pi-dollar"></i>
-                </span>
-                <div class="flex flex-col justify-center">
-                  <span class="text-surface-500 dark:text-surface-400 text-sm">Saldo total</span>
-                  <span class="font-bold text-lg">R$ {{ saldo }}</span>
-                </div>
-              </div>
-            </p-card>
-          </ng-container>
-        </div>
+        <p-menu #userMenu [model]="userMenuItems" [popup]="true" appendTo="body" styleClass="dark-menu-popup"> </p-menu>
       </div>
     </div>
   </div>`,
   styles: [':host { --p-card-body-padding: 5px 20px; }'],
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
-export class AppTopbar {
+export class AppTopbar implements OnInit {
   _layoutService = inject(LayoutService);
 
   items!: MenuItem[];
-  saldo: number | null = null;
-  toggleDarkMode() {
-    this._layoutService.layoutConfig.update(state => ({ ...state, darkTheme: !state.darkTheme }));
+  userMenuItems: MenuItem[] = [];
+
+  ngOnInit(): void {
+    this.userMenuItems = this.defineUserMenu();
+  }
+
+  defineUserMenu(): MenuItem[] {
+    return [
+      {
+        label: 'Meu Perfil',
+        icon: 'pi pi-fw pi-user',
+        command: () => {
+          console.log('Ir para Perfil');
+          // Ex: this.router.navigate(['/user/profile']);
+        },
+      },
+      {
+        label: 'Minhas Mesas',
+        icon: 'pi pi-fw pi-table', // Exemplo de ícone
+        command: () => {
+          console.log('Ir para Minhas Mesas');
+          // Ex: this.router.navigate(['/user/tables']);
+        },
+      },
+      {
+        label: 'Configurações',
+        icon: 'pi pi-fw pi-cog',
+        command: () => {
+          console.log('Ir para Configurações');
+          // Ex: this.router.navigate(['/user/settings']);
+        },
+      },
+      {
+        separator: true, // Linha separadora
+      },
+      {
+        label: 'Sair',
+        icon: 'pi pi-fw pi-power-off',
+        command: () => {
+          console.log('Ir para Configurações');
+          // Ex: this.router.navigate(['/user/settings']);
+        },
+      },
+    ];
   }
 }

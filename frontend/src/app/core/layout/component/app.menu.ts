@@ -41,44 +41,44 @@ export class AppMenu implements OnInit {
       {
         items: [{ label: 'Home', icon: 'pi pi-fw pi-home', routerLink: ['/'] }],
       },
-      {
-        items: [
-          {
-            label: 'Financeiro',
-            icon: 'pi pi-fw pi-wallet',
-            items: [
-              { label: 'Carteira', routerLink: ['/account/wallet'] },
-              { label: 'Extrato', routerLink: ['/account/extract'] },
-              { label: 'Plano', routerLink: ['/account/plan'] },
-            ],
-          },
-        ],
-      },
-      {
-        items: [
-          {
-            label: 'Configuração',
-            icon: 'pi pi-fw pi-cog',
-            items: [
-              { label: 'Meu Perfil', routerLink: ['/account/profile'] },
-              { label: 'Dados Transportadora', routerLink: ['/account/parameter'] },
-            ],
-          },
-        ],
-      },
-      {
-        items: [
-          {
-            label: 'Suporte',
-            icon: 'pi pi-fw pi-question',
-            items: [
-              { label: 'F.A.Q', routerLink: ['/account/faq'] },
-              { label: 'Tabela de Preços', routerLink: ['/account/plans'] },
-              { label: 'Termos de Serviço', routerLink: ['/account/terms'] },
-            ],
-          },
-        ],
-      },
+      // {
+      //   items: [
+      //     {
+      //       label: 'Financeiro',
+      //       icon: 'pi pi-fw pi-wallet',
+      //       items: [
+      //         { label: 'Carteira', routerLink: ['/account/wallet'] },
+      //         { label: 'Extrato', routerLink: ['/account/extract'] },
+      //         { label: 'Plano', routerLink: ['/account/plan'] },
+      //       ],
+      //     },
+      //   ],
+      // },
+      // {
+      //   items: [
+      //     {
+      //       label: 'Configuração',
+      //       icon: 'pi pi-fw pi-cog',
+      //       items: [
+      //         { label: 'Meu Perfil', routerLink: ['/account/profile'] },
+      //         { label: 'Dados Transportadora', routerLink: ['/account/parameter'] },
+      //       ],
+      //     },
+      //   ],
+      // },
+      // {
+      //   items: [
+      //     {
+      //       label: 'Suporte',
+      //       icon: 'pi pi-fw pi-question',
+      //       items: [
+      //         { label: 'F.A.Q', routerLink: ['/account/faq'] },
+      //         { label: 'Tabela de Preços', routerLink: ['/account/plans'] },
+      //         { label: 'Termos de Serviço', routerLink: ['/account/terms'] },
+      //       ],
+      //     },
+      //   ],
+      // },
     ];
   }
 

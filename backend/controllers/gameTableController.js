@@ -7,6 +7,7 @@ exports.createGameTable = async (req, res) => {
     const {
       title,
       description,
+      image,
       system,
       type,
       mode,
@@ -14,6 +15,7 @@ exports.createGameTable = async (req, res) => {
       maxPlayers,
       dayOfWeek,
       time,
+      duration
     } = req.body;
 
     // Verifica se o usuário é um Mestre de Jogo (Role: GAME_MASTER)
@@ -26,6 +28,7 @@ exports.createGameTable = async (req, res) => {
     const newGameTable = new GameTable({
       title,
       description,
+      image,
       system,
       type,
       mode,
@@ -34,6 +37,7 @@ exports.createGameTable = async (req, res) => {
       maxPlayers,
       dayOfWeek,
       time,
+      duration
     });
 
     await newGameTable.save();
@@ -50,7 +54,7 @@ exports.createGameTable = async (req, res) => {
 exports.listAvailableGameTables = async (req, res) => {
   try {
     // Pega os parâmetros de paginação da query string
-    const { page = 1, limit = 10, status, system, title } = req.query;
+    const { page = 1, limit = 10, status, system, title, duration } = req.query;
 
     // Validação dos parâmetros de página e limite
     const pageNumber = parseInt(page, 10);
@@ -73,6 +77,9 @@ exports.listAvailableGameTables = async (req, res) => {
     }
     if (system) {
       filter.system = system;
+    }
+    if(duration) {
+      filter.duration = duration;
     }
     if (title) {
       filter.title = { $regex: new RegExp(title, "i") }; // busca insensível ao caso

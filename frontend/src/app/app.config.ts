@@ -35,7 +35,7 @@ export const appConfig: ApplicationConfig = {
       theme: {
         preset: DFTheme,
         options: {
-          darkModeSelector: false,
+          darkMode: true,
         },
       },
       translation: {

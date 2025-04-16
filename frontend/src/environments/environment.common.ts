@@ -1,10 +1,10 @@
 export const appVersion = '0.0.1';
 
 export const appInfo = {
-  name: 'JOIT',
-  logo: 'joit',
-  network: 'joit',
-  website: 'www.joit.com.br',
+  name: 'Dungeon Finder',
+  logo: 'Dungeon Finder',
+  network: 'Dungeon Finder',
+  website: 'www.DungeonFinder.com.br',
 };
 
 export const applicationBase = {

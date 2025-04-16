@@ -1,10 +1,10 @@
-import { ImageModule } from 'primeng/image';
-import { DataViewModule } from 'primeng/dataview';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Importar todos os módulos do PrimeNG
+import { ImageModule } from 'primeng/image';
+import { DataViewModule } from 'primeng/dataview';
 import { FieldsetModule } from 'primeng/fieldset';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextModule } from 'primeng/inputtext';
@@ -46,6 +46,13 @@ import { AccordionModule } from 'primeng/accordion';
 import { MeterGroupModule } from 'primeng/metergroup';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { MenubarModule } from 'primeng/menubar';
+import { MenuModule } from 'primeng/menu';
+import { BadgeModule } from 'primeng/badge';
+import { OverlayBadgeModule } from 'primeng/overlaybadge';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+import { TagModule } from 'primeng/tag';
+
 @NgModule({
   imports: [
     FormsModule,
@@ -94,6 +101,12 @@ import { MenubarModule } from 'primeng/menubar';
     MeterGroupModule,
     ProgressBarModule,
     MenubarModule,
+    MenuModule,
+    BadgeModule,
+    OverlayBadgeModule,
+    AvatarModule,
+    AvatarGroupModule,
+    TagModule,
   ],
   exports: [
     FormsModule,
@@ -142,6 +155,12 @@ import { MenubarModule } from 'primeng/menubar';
     MeterGroupModule,
     ProgressBarModule,
     MenubarModule,
+    MenuModule,
+    BadgeModule,
+    OverlayBadgeModule,
+    AvatarModule,
+    AvatarGroupModule,
+    TagModule,
   ],
 })
 export class PrimeNgModule {}
