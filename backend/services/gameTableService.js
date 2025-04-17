@@ -1,12 +1,12 @@
 const GameTable = require("../models/GameTable");
 const JoinRequest = require("../models/JoinRequest");
+const { successResponse, errorResponse } = require("../utils/responseHelper");
 
-// Criar uma nova mesa de jogo
 exports.createGameTable = async (userId, gameTableData) => {
   try {
     const newGameTable = new GameTable({
       ...gameTableData,
-      gameMasterId: userId, // O ID do usuário que é o Mestre de Jogo
+      gameMasterId: userId,
     });
 
     await newGameTable.save();
@@ -16,7 +16,6 @@ exports.createGameTable = async (userId, gameTableData) => {
   }
 };
 
-// Listar mesas abertas para jogadores
 exports.listAvailableGameTables = async (page, limit) => {
   try {
     const skip = (page - 1) * limit;
@@ -35,7 +34,6 @@ exports.listAvailableGameTables = async (page, limit) => {
   }
 };
 
-// Jogador se inscreve em uma mesa
 exports.joinGameTable = async (gameTableId, userId) => {
   try {
     const gameTable = await GameTable.findById(gameTableId);
@@ -47,7 +45,6 @@ exports.joinGameTable = async (gameTableId, userId) => {
       throw new Error("Game Table is full");
     }
 
-    // Verifica se o jogador já está inscrito
     if (gameTable.players.includes(userId)) {
       throw new Error("You are already enrolled in this game table");
     }
@@ -61,7 +58,6 @@ exports.joinGameTable = async (gameTableId, userId) => {
   }
 };
 
-// Solicitar participação na mesa
 exports.requestJoinGameTable = async (gameTableId, userId) => {
   try {
     const gameTable = await GameTable.findById(gameTableId);
@@ -91,7 +87,6 @@ exports.requestJoinGameTable = async (gameTableId, userId) => {
   }
 };
 
-// Aceitar ou Rejeitar uma solicitação de jogador
 exports.respondToJoinRequest = async (joinRequestId, action, userId) => {
   try {
     const joinRequest = await JoinRequest.findById(joinRequestId).populate(
@@ -102,7 +97,6 @@ exports.respondToJoinRequest = async (joinRequestId, action, userId) => {
       throw new Error("Join Request not found");
     }
 
-    // Verifica se o mestre de jogo é o mesmo que o autor da mesa
     if (joinRequest.gameTableId.gameMasterId.toString() !== userId) {
       throw new Error("You are not the game master of this table");
     }
@@ -114,7 +108,6 @@ exports.respondToJoinRequest = async (joinRequestId, action, userId) => {
     joinRequest.status = action;
     await joinRequest.save();
 
-    // Se for aceito, adiciona o jogador à mesa
     if (action === "ACCEPTED") {
       const gameTable = joinRequest.gameTableId;
       gameTable.players.push(joinRequest.playerId);

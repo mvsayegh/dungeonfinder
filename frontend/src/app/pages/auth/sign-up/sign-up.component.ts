@@ -1,15 +1,18 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { PrimeNgModule } from '../../../shared/primeng/primeng.module';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RpgLoadingComponent } from '../../../shared/components/loading.component';
+import { AuthService, RegisterRequest } from '../../../core/authentication/authentication.service';
+import { finalize } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
-  imports: [PrimeNgModule, RouterModule],
+  imports: [PrimeNgModule, RpgLoadingComponent],
   providers: [MessageService],
 })
 export class SignUpComponent {
@@ -36,42 +39,58 @@ export class SignUpComponent {
   }
 
   constructor(
-    private http: HttpClient,
-    private messageService: MessageService
+    private router: Router,
+    private messageService: MessageService,
+    private authService: AuthService
   ) {}
 
   showTermsAndConditions() {
     this.termsAndConditionsVisible = true;
   }
 
-  register() {
-    if (this.registerForm.valid) {
-      this.loading = true;
-      const body = this.registerForm.value;
-      this.http.post('auth/register', body).subscribe({
-        next: () => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Check your email to verify your account!',
-          });
-          this.loading = false;
-        },
-        error: err => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: err?.error?.message || 'Registration failed.',
-          });
-          this.loading = false;
-        },
-      });
-    } else {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Warning',
-        detail: 'Please fill out all required fields correctly.',
-      });
+  onSubmit(): void {
+    if (this.registerForm.invalid) {
+      this.messageService.add({ severity: 'warn', summary: 'Fields are required' });
+      return;
     }
+    this.loading = true;
+    const body: RegisterRequest = {
+      name: this.registerForm.value.name!,
+      email: this.registerForm.value.email!,
+      password: this.registerForm.value.password!,
+    };
+    this.authService
+      .register(body)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: res => {
+          if (res.success) {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: res.message,
+            });
+            this.registerForm.disable();
+            setTimeout(() => {
+              this.router.navigate(['/']);
+            }, 2000);
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: res.message,
+            });
+            this.registerForm.reset();
+          }
+        },
+        error: (err: HttpErrorResponse) => {
+          const msg = err?.message || 'Occurred an unknown error!';
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
+          this.registerForm.reset();
+        },
+        complete: () => {
+          this.loading = false;
+        },
+      });
   }
 }

@@ -1,5 +1,6 @@
 const GameTable = require("../models/GameTable");
 const JoinRequest = require("../models/JoinRequest");
+const { successResponse, errorResponse } = require("../utils/responseHelper");
 
 // Criar uma nova mesa (protegida)
 exports.createGameTable = async (req, res) => {
@@ -15,7 +16,7 @@ exports.createGameTable = async (req, res) => {
       maxPlayers,
       dayOfWeek,
       time,
-      duration
+      duration,
     } = req.body;
     const newGameTable = new GameTable({
       title,
@@ -29,75 +30,55 @@ exports.createGameTable = async (req, res) => {
       maxPlayers,
       dayOfWeek,
       time,
-      duration
+      duration,
     });
     await newGameTable.save();
-    res.status(201).json({ message: "Game Table created successfully", newGameTable });
+    successResponse(
+      res,
+      { newGameTable },
+      "Game Table created successfully",
+      201
+    );
   } catch (err) {
-    res.status(500).json({ message: "Server Error", error: err.message });
+    errorResponse(res, err.message, 500);
   }
 };
 
 // Listar todas as mesas disponíveis (para jogadores)
 exports.listAvailableGameTables = async (req, res) => {
   try {
-    // Pega os parâmetros de paginação da query string
     const { page = 1, limit = 10, status, system, title, duration } = req.query;
 
-    // Validação dos parâmetros de página e limite
     const pageNumber = parseInt(page, 10);
     const pageSize = parseInt(limit, 10);
 
-    // Se os parâmetros de página ou limite forem inválidos, retornar erro
     if (isNaN(pageNumber) || isNaN(pageSize)) {
-      return res
-        .status(400)
-        .json({ message: "Invalid page or limit parameter" });
+      return errorResponse(res, "Invalid page or limit parameter", 400);
     }
 
-    // Calcular o número de documentos a serem pulados (offset)
     const skip = (pageNumber - 1) * pageSize;
 
-    // Monta o filtro dinâmico
     const filter = {};
-    if (status) {
-      filter.status = status;
-    }
-    if (system) {
-      filter.system = system;
-    }
-    if(duration) {
-      filter.duration = duration;
-    }
-    if (title) {
-      filter.title = { $regex: new RegExp(title, "i") }; // busca insensível ao caso
-    }
+    if (status) filter.status = status;
+    if (system) filter.system = system;
+    if (duration) filter.duration = duration;
+    if (title) filter.title = { $regex: new RegExp(title, "i") };
 
-    // Buscar as mesas abertas com a paginação
     const gameTables = await GameTable.find(filter)
-      .skip(skip) // Pular a quantidade de itens conforme a página
-      .limit(pageSize) // Limitar a quantidade de itens por página
-      .populate("gameMasterId", "name") // Adiciona informações do mestre de jogo
+      .skip(skip)
+      .limit(pageSize)
+      .populate("gameMasterId", "name")
       .exec();
 
-    // Contagem total de mesas abertas (para calcular total de páginas)
     const totalGameTables = await GameTable.countDocuments(filter);
-
-    // Calcular o número total de páginas
     const totalPages = Math.ceil(totalGameTables / pageSize);
 
-    // Resposta com dados da mesa e informações de paginação
-    res.json({
+    successResponse(res, {
       gameTables,
-      pagination: {
-        page: pageNumber,
-        limit: pageSize,
-        totalPages,
-        totalItems: totalGameTables,
-      },
+      pagination: { pageNumber, pageSize, totalPages, totalGameTables },
     });
   } catch (err) {
-    res.status(500).json({ message: "Server Error", error: err.message });
+    errorResponse(res, err.message, 500);
   }
 };
 
@@ -106,28 +87,26 @@ exports.joinGameTable = async (req, res) => {
   const { gameTableId } = req.params;
   try {
     const gameTable = await GameTable.findById(gameTableId);
-    if (!gameTable)
-      return res.status(404).json({ message: "Game Table not found" });
+    if (!gameTable) return errorResponse(res, "Game Table not found", 404);
 
     if (gameTable.players.length >= gameTable.maxPlayers) {
-      return res.status(400).json({ message: "Game Table is full" });
+      return errorResponse(res, "Game Table is full", 400);
     }
 
-    // Verifica se o jogador já está inscrito
     if (gameTable.players.includes(req.user.id)) {
-      return res
-        .status(400)
-        .json({ message: "You are already enrolled in this game table" });
+      return errorResponse(
+        res,
+        "You are already enrolled in this game table",
+        400
+      );
     }
 
-    gameTable.players.push(req.user.id); // Adiciona o jogador à mesa
+    gameTable.players.push(req.user.id);
     await gameTable.save();
 
-    res
-      .status(200)
-      .json({ message: "Successfully joined the game table", gameTable });
+    successResponse(res, { gameTable }, "Successfully joined the game table");
   } catch (err) {
-    res.status(500).json({ message: "Server Error", error: err.message });
+    errorResponse(res, err.message, 500);
   }
 };
 
@@ -137,19 +116,19 @@ exports.requestJoinGameTable = async (req, res) => {
 
   try {
     const gameTable = await GameTable.findById(gameTableId);
-    if (!gameTable)
-      return res.status(404).json({ message: "Game Table not found" });
+    if (!gameTable) return errorResponse(res, "Game Table not found", 404);
 
-    // Verifica se o jogador já está inscrito
     const alreadyRequested = await JoinRequest.findOne({
       gameTableId,
       playerId: req.user.id,
       status: "PENDING",
     });
     if (alreadyRequested)
-      return res.status(400).json({
-        message: "You have already requested to join this game table",
-      });
+      return errorResponse(
+        res,
+        "You have already requested to join this game table",
+        400
+      );
 
     const joinRequest = new JoinRequest({
       gameTableId,
@@ -158,54 +137,54 @@ exports.requestJoinGameTable = async (req, res) => {
 
     await joinRequest.save();
 
-    res
-      .status(200)
-      .json({ message: "Join request submitted successfully", joinRequest });
+    successResponse(
+      res,
+      { joinRequest },
+      "Join request submitted successfully"
+    );
   } catch (err) {
-    res.status(500).json({ message: "Server Error", error: err.message });
+    errorResponse(res, err.message, 500);
   }
 };
 
 // Aceitar ou Rejeitar uma solicitação de jogador (só mestre de jogo)
 exports.respondToJoinRequest = async (req, res) => {
   const { joinRequestId } = req.params;
-  const { action } = req.body; // 'ACCEPTED' ou 'REJECTED'
+  const { action } = req.body;
 
   try {
     const joinRequest = await JoinRequest.findById(joinRequestId).populate(
       "gameTableId playerId"
     );
-    if (!joinRequest)
-      return res.status(404).json({ message: "Join Request not found" });
+    if (!joinRequest) return errorResponse(res, "Join Request not found", 404);
 
-    // Verifica se o mestre de jogo é o mesmo que o autor da mesa
     if (joinRequest.gameTableId.gameMasterId.toString() !== req.user.id) {
-      return res
-        .status(403)
-        .json({ message: "You are not the game master of this table" });
+      return errorResponse(
+        res,
+        "You are not the game master of this table",
+        403
+      );
     }
 
     if (action !== "ACCEPTED" && action !== "REJECTED") {
-      return res.status(400).json({ message: "Invalid action" });
+      return errorResponse(res, "Invalid action", 400);
     }
 
     joinRequest.status = action;
     await joinRequest.save();
 
-    // Se for aceito, adiciona o jogador à mesa
     if (action === "ACCEPTED") {
       const gameTable = joinRequest.gameTableId;
       gameTable.players.push(joinRequest.playerId);
       await gameTable.save();
     }
 
-    // Notificação para o jogador
     io.to(joinRequest.playerId.toString()).emit("notification", {
       message: `Your join request for table "${joinRequest.gameTableId.title}" was ${action}`,
     });
 
-    res.status(200).json({ message: `Join Request ${action}`, joinRequest });
+    successResponse(res, { joinRequest }, `Join Request ${action}`);
   } catch (err) {
-    res.status(500).json({ message: "Server Error", error: err.message });
+    errorResponse(res, err.message, 500);
   }
 };

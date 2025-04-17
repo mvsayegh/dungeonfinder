@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { errorResponse } = require("../utils/responseHelper");
 
 const authMiddleware = (req, res, next) => {
   const token = req.header("Authorization")?.startsWith("Bearer ")
@@ -6,7 +7,7 @@ const authMiddleware = (req, res, next) => {
     : null;
 
   if (!token) {
-    return res.status(401).json({ message: "No token provided" });
+    return errorResponse(res, "No token provided", 401);  // Usando o responseHelper
   }
 
   try {
@@ -15,9 +16,9 @@ const authMiddleware = (req, res, next) => {
     next();
   } catch (err) {
     if (err.name === "TokenExpiredError") {
-      return res.status(401).json({ message: "Token expired" });
+      return errorResponse(res, "Token expired", 401);  // Usando o responseHelper
     }
-    return res.status(401).json({ message: "Invalid token" });
+    return errorResponse(res, "Invalid token", 401);  // Usando o responseHelper
   }
 };
 

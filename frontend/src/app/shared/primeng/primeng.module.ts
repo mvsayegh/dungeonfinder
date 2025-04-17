@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { RouterModule } from '@angular/router';
 // Importar todos os módulos do PrimeNG
 import { ImageModule } from 'primeng/image';
 import { DataViewModule } from 'primeng/dataview';
@@ -58,6 +58,7 @@ import { TagModule } from 'primeng/tag';
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
+    RouterModule,
     FieldsetModule,
     InputMaskModule,
     IftaLabelModule,
@@ -112,6 +113,7 @@ import { TagModule } from 'primeng/tag';
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
+    RouterModule,
     FieldsetModule,
     InputMaskModule,
     IftaLabelModule,

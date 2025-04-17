@@ -1,4 +1,4 @@
-const GameTable = require('../models/GameTable');
+const GameTable = require("../models/GameTable");
 
 const listUserTables = async (userId, { page = 1, limit = 10 }) => {
   try {
@@ -6,7 +6,7 @@ const listUserTables = async (userId, { page = 1, limit = 10 }) => {
     const pageSize = parseInt(limit, 10);
 
     if (isNaN(pageNumber) || isNaN(pageSize)) {
-      throw new Error('Invalid page or limit parameter');
+      throw new Error("Invalid page or limit parameter");
     }
 
     const skip = (pageNumber - 1) * pageSize;
@@ -21,8 +21,12 @@ const listUserTables = async (userId, { page = 1, limit = 10 }) => {
       .limit(pageSize)
       .exec();
 
-    const totalGameMasterTables = await GameTable.countDocuments({ gameMasterId: userId });
-    const totalPlayerTables = await GameTable.countDocuments({ players: userId });
+    const totalGameMasterTables = await GameTable.countDocuments({
+      gameMasterId: userId,
+    });
+    const totalPlayerTables = await GameTable.countDocuments({
+      players: userId,
+    });
 
     const totalGameMasterPages = Math.ceil(totalGameMasterTables / pageSize);
     const totalPlayerPages = Math.ceil(totalPlayerTables / pageSize);
@@ -51,5 +55,5 @@ const listUserTables = async (userId, { page = 1, limit = 10 }) => {
 };
 
 module.exports = {
-  listUserTables
+  listUserTables,
 };

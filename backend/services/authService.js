@@ -35,7 +35,8 @@ const login = async ({ email, password }) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
-    return { token };
+
+    return { token, id: user._id };
   } catch (err) {
     console.error("Login Error:", err);
     return { status: 500, message: "Login failed", error: err.message };

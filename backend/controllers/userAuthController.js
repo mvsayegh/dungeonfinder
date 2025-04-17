@@ -1,14 +1,15 @@
 const userService = require("../services/userService");
+const { successResponse, errorResponse } = require("../utils/responseHelper");
 
 // Listar todas as mesas de um usuário
 exports.listUserTables = async (req, res) => {
   const userId = req.user.id;
-  const { page, limit } = req.query;
+  const { page = 1, limit = 10 } = req.query;
 
   try {
     const data = await userService.listUserTables(userId, { page, limit });
-    res.json(data);
+    successResponse(res, data, "User tables retrieved successfully");
   } catch (err) {
-    res.status(500).json({ message: "Server Error", error: err.message });
+    errorResponse(res, err.message, 500);
   }
 };
