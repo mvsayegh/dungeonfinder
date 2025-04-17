@@ -81,7 +81,7 @@ export class AppTopbar implements OnInit {
         {
           label: 'Configurations',
           icon: 'pi pi-fw pi-cog',
-          isabled: true,
+          disabled: true,
           command: () => this.navigate('/settings'),
         },
         { separator: true },
