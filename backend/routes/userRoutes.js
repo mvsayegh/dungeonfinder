@@ -4,14 +4,22 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const isAdminMiddleware = require("../middlewares/isAdminMiddleware");
 const userController = require("../controllers/userController");
 
+// Admin: listar todos usuários
+router.get("/", authMiddleware, isAdminMiddleware, userController.listUsers);
 
-router.get("/all", authMiddleware, isAdminMiddleware, userController.listUsers);
-router.get("/tables", authMiddleware, userController.listUserTables);
-router.get("/info", authMiddleware, userController.getUserInfo);
+// Perfil do usuário logado
+router.get("/me", authMiddleware, userController.getUserInfo);
+
+// Mesas do usuário logado
+router.get("/me/tables", authMiddleware, userController.listUserTables);
+
+// Admin: criar novo usuário
 router.post("/", authMiddleware, isAdminMiddleware, userController.createUser);
-router.put("/edit", authMiddleware, userController.editUser);
+
+// Atualizar dados do próprio usuário
+router.put("/me", authMiddleware, userController.editUser);
+
+// Admin: deletar usuário por ID
 router.delete("/:id", authMiddleware, isAdminMiddleware, userController.deleteUser);
-
-
 
 module.exports = router;

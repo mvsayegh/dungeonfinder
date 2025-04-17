@@ -24,8 +24,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
-app.use("/api/games", gameTableRoutes);
-app.use("/api/user", userRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/game-tables", gameTableRoutes);
 
 // Conexão do socket
 io.on("connection", (socket) => {
