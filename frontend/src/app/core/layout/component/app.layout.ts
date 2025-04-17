@@ -4,7 +4,6 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { AppTopbar } from './app.topbar';
 import { AppFooter } from './app.footer';
-import { AppSidebar } from './app.siderbar';
 import { LayoutService } from '../service/layout.service';
 
 @Component({
@@ -13,7 +12,6 @@ import { LayoutService } from '../service/layout.service';
   imports: [CommonModule, AppTopbar, RouterModule, AppFooter],
   template: `<div class="layout-wrapper">
     <app-topbar></app-topbar>
-    <!-- <app-sidebar></app-sidebar> -->
     <div class="layout-main-container">
       <div class="layout-main">
         <div class="card"><router-outlet></router-outlet></div>
@@ -27,8 +25,6 @@ export class AppLayout {
   overlayMenuOpenSubscription: Subscription;
 
   menuOutsideClickListener: any;
-
-  @ViewChild(AppSidebar) appSidebar!: AppSidebar;
 
   @ViewChild(AppTopbar) appTopBar!: AppTopbar;
 

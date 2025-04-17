@@ -1,155 +1,95 @@
-<p-panel>
-  <div class="flex-1 min-w-[180px]">
-    <label for="systemDropdown" class="block text-sm font-medium text-gray-300 mb-1">Sistema</label>
-    <p-select
-      id="systemDropdown"
-      [options]="systemOptions"
-      [(ngModel)]="filters.system"
-      placeholder="Todos os sistemas"
-      optionLabel="label"
-      optionValue="value"
-      [showClear]="true"
-      appendTo="body">
-    </p-select>
-  </div>
+<!-- eslint-disable @angular-eslint/template/label-has-associated-control -->
+<p-panel
+  [toggleable]="true"
+  styleClass="mb-6 panel-glow border-4 rounded-xl overflow-hidden shadow-2xl transition-all duration-300 ease-in-out"
+  [collapsed]="false"
+>
+  <ng-template pTemplate="header">
+    <div class="flex items-center text-primary font-bold text-lg gap-2">
+      <i class="pi pi-scroll text-xl"></i>
+      Filtros de Campanha
+    </div>
+  </ng-template>
 
-  <div class="flex-1 min-w-[180px]">
-    <label for="statusDropdown" class="block text-sm font-medium text-gray-300 mb-1">Status</label>
-    <p-select
-      id="statusDropdown"
-      [options]="statusOptions"
-      [(ngModel)]="filters.status"
-      placeholder="Todos os status"
-      optionLabel="label"
-      optionValue="value"
-      [showClear]="true"
-      appendTo="body">
-    </p-select>
-  </div>
+  <div class="">
 
-  <div class="flex-1 min-w-[180px]">
-    <label for="durationDropdown" class="block text-sm font-medium text-gray-300 mb-1">Duração</label>
-    <p-select
-      id="durationDropdown"
-      [options]="durationOptions"
-      [(ngModel)]="filters.duration"
-      placeholder="Todas as durações"
-      optionLabel="label"
-      optionValue="value"
-      [showClear]="true"
-      appendTo="body">
-    </p-select>
-  </div>
+    <div class="flex flex-wrap gap-6 items-end">
 
-  <div class="flex-1 min-w-[220px]">
-    <label for="titleInput" class="block text-sm font-medium text-gray-300 mb-1">Título</label>
-    <input id="titleInput" type="text" pInputText [(ngModel)]="filters.title" placeholder="Buscar por título..." />
-  </div>
+      <!-- Sistema -->
+      <div class="flex-1 min-w-[200px]">
+        <label class="block text-sm font-semibold text-primary mb-1">
+          <i class="pi pi-sitemap mr-1"></i> Sistema
+        </label>
+        <p-select
+          [options]="systemOptions"
+          [(ngModel)]="filters.system"
+          placeholder="Todos os sistemas"
+          optionLabel="label"
+          optionValue="value"
+          [showClear]="true"
+          appendTo="body"
+          styleClass="w-full shadow-md rounded-md">
+        </p-select>
+      </div>
 
-  <div class="flex-shrink-0">
-    <p-button label="Filtrar" icon="pi pi-filter" styleClass="p-button-sm dark-button" (onClick)="loadTables()"> </p-button>
+      <!-- Status -->
+      <div class="flex-1 min-w-[200px]">
+        <label class="block text-sm font-semibold text-primary mb-1">
+          <i class="pi pi-check-square mr-1"></i> Status
+        </label>
+        <p-select
+          [options]="statusOptions"
+          [(ngModel)]="filters.status"
+          placeholder="Todos os status"
+          optionLabel="label"
+          optionValue="value"
+          [showClear]="true"
+          appendTo="body"
+          styleClass="w-full shadow-md rounded-md">
+        </p-select>
+      </div>
+
+      <!-- Duração -->
+      <div class="flex-1 min-w-[200px]">
+        <label class="block text-sm font-semibold text-primary mb-1">
+          <i class="pi pi-hourglass mr-1"></i> Duração
+        </label>
+        <p-select
+          [options]="durationOptions"
+          [(ngModel)]="filters.duration"
+          placeholder="Todas as durações"
+          optionLabel="label"
+          optionValue="value"
+          [showClear]="true"
+          appendTo="body"
+          styleClass="w-full shadow-md rounded-md">
+        </p-select>
+      </div>
+
+      <!-- Título -->
+      <div class="flex-1 min-w-[240px]">
+        <label class="block text-sm font-semibold text-primary mb-1">
+          <i class="pi pi-pencil mr-1"></i> Título
+        </label>
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="filters.title"
+          placeholder="Buscar por título..."
+          class="w-full shadow-md rounded-md" />
+      </div>
+
+      <!-- Botão -->
+      <div class="flex-shrink-0">
+        <p-button
+          label="Filtrar"
+          icon="pi pi-book"
+          styleClass="p-button-sm bg-yellow-800 hover:bg-yellow-900 text-white border-0 transition-all shadow-lg rounded-md"
+          (onClick)="loadTables()">
+        </p-button>
+      </div>
+
+    </div>
   </div>
 </p-panel>
 
-
-<p-dataview
-  #dv
-  [value]="tables"
-  [paginator]="true"
-  [rows]="10"
-  [layout]="layout"
-  [rowsPerPageOptions]="[10, 20, 50]"
-  [lazy]="false"
-  [loading]="isLoading"
-  emptyMessage="Nenhuma mesa encontrada">
-  <!-- HEADER TEMPLATE -->
-  <ng-template #header>
-    <div class="flex justify-end">
-      <p-selectButton [(ngModel)]="layout" [options]="layoutOptions" [allowEmpty]="false">
-        <ng-template let-item pTemplate="item">
-          <i class="pi" [ngClass]="{ 'pi-bars': item.value === 'list', 'pi-table': item.value === 'grid' }"></i>
-        </ng-template>
-      </p-selectButton>
-    </div>
-  </ng-template>
-  <!-- Template LIST -->
-  <ng-template #list let-table>
-    <div *ngFor="let table of tables; let first = first">
-      <div class="w-full border rounded-lg p-4 shadow-md mb-4">
-        <div class="flex flex-col sm:flex-row gap-6">
-          <!-- IMAGEM -->
-          <div class="flex-shrink-0 w-full sm:w-48 flex flex-col">
-            <!-- Imagem -->
-            <img
-              [src]="table.image ?? 'assets/images/default.jpg'"
-              alt="{{ table.title }}"
-              class="w-full h-32 object-cover rounded"
-            />
-
-            <!-- Botões abaixo da imagem -->
-            <div class="mt-4 flex flex-col gap-2">
-              <p-button
-                label="Ver Detalhes"
-                icon="pi pi-sign-in"
-                styleClass="p-button-outlined p-button-sm w-full">
-              </p-button>
-              <p-button
-                label="Solicitar acesso"
-                icon="pi pi-user"
-                styleClass="p-button-sm p-button-success w-full">
-              </p-button>
-            </div>
-          </div>
-
-          <!-- CONTEÚDO -->
-          <div class="flex-1">
-            <h3 class="text-2xl font-semibold text-primary-600 dark:text-primary-300 mb-1">{{ table.title }}</h3>
-            <p class="text-sm text-gray-600 dark:text-gray-300 italic mb-2">{{ table.description }}</p>
-            <p><strong>Sistema:</strong> {{ table.system }}</p>
-            <p><strong>Mestre:</strong> {{ table.gameMasterId?.name }}</p>
-            <p><strong>Data:</strong> {{ table.time | date: 'fullDate' }} às {{ table.time | date: 'shortTime' }}</p>
-            <p><strong>Máximo de jogadores:</strong> {{ table.maxPlayers }}</p>
-            <p>
-              <strong>Status: </strong>
-              <p-tag [severity]="table.status === 'OPEN' ? 'success' : 'warn'" [value]="table.status === 'OPEN' ? 'Aberta' : 'Fechada'" />
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </ng-template>
-
-  <!-- Template GRID -->
-  <ng-template #grid let-table>
-    <div class="grid grid-cols-12 gap-4">
-      <div *ngFor="let table of tables" class="col-span-12 sm:col-span-6 md:col-span-4 xl:col-span-6 p-2">
-        <div class="w-full sm:w-1/2 lg:w-1/3 p-2">
-          <div class="border border-gray-200 dark:border-gray-700 rounded-lg shadow p-4 h-full flex flex-col justify-between">
-            <div>
-              <img [src]="table.image ?? 'assets/images/default.jpg'" alt="{{ table.title }}" class="w-full h-48 object-cover mb-3 rounded" />
-              <h4 class="text-xl font-semibold mb-1 text-primary-600 dark:text-primary-300">{{ table.title }}</h4>
-              <p class="text-sm text-gray-600 dark:text-gray-300 italic mb-2">{{ table.description }}</p>
-              <p class="text-sm"><strong>Sistema:</strong> {{ table.system }}</p>
-              <p class="text-sm"><strong>Data:</strong> {{ table.time | date: 'short' }}</p>
-              <p class="text-sm"><strong>Mestre:</strong> {{ table.gameMasterId?.name }}</p>
-              <p class="text-sm"><strong>Jogadores:</strong> {{ table.players?.length }}/{{ table.maxPlayers }}</p>
-            </div>
-            <div class="mt-4 flex justify-between items-center">
-              <p-tag [severity]="table.status === 'OPEN' ? 'success' : 'warn'" [value]="table.status === 'OPEN' ? 'Aberta' : 'Fechada'" />
-            </div>
-
-            <div class="mt-4 flex flex-col w-full gap-4">
-              <p-button label="Ver Detalhes" icon="pi pi-sign-in" styleClass="p-button-outlined p-button-sm"></p-button>
-              <p-button label="Solicitar acesso" icon="pi pi-user" styleClass="p-button-sm p-button-success"></p-button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </ng-template>
-
-  <!-- Template VAZIO -->
-  <ng-template #empty>
-    <p class="text-center text-gray-500">Nenhuma mesa encontrada.</p>
-  </ng-template>
-</p-dataview>

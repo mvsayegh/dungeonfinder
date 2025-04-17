@@ -3,7 +3,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 import { GameTableService } from '../../core/services/game-table.service';
 import { finalize } from 'rxjs';
-import { NgClass } from '@angular/common';
 
 interface GameMaster {
   _id: string;
@@ -25,7 +24,7 @@ interface Table {
 
 @Component({
   selector: 'app-home',
-  imports: [PrimeNgModule, NgClass],
+  imports: [PrimeNgModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

@@ -53,6 +53,8 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { TagModule } from 'primeng/tag';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TabsModule } from 'primeng/tabs';
+
 @NgModule({
   imports: [
     FormsModule,
@@ -109,6 +111,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     AvatarGroupModule,
     TagModule,
     ConfirmDialogModule,
+    TabsModule,
   ],
   exports: [
     FormsModule,
@@ -165,6 +168,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     AvatarGroupModule,
     TagModule,
     ConfirmDialogModule,
+    TabsModule,
   ],
 })
 export class PrimeNgModule {}

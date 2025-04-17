@@ -70,7 +70,6 @@ export class AppTopbar implements OnInit {
         {
           label: 'Profile',
           icon: 'pi pi-fw pi-user',
-          disabled: true,
           command: () => this.navigate('/user/profile'),
         },
         {
