@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { StorageService } from './../../../core/authentication/storage.service';
+import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { PrimeNgModule } from '../../../shared/primeng/primeng.module';
@@ -15,7 +16,7 @@ import { Router } from '@angular/router';
   imports: [PrimeNgModule, RpgLoadingComponent],
   providers: [MessageService],
 })
-export class SignUpComponent {
+export class SignUpComponent implements OnInit {
   loading?: boolean = false;
   termsAndConditionsVisible = false;
 
@@ -41,8 +42,15 @@ export class SignUpComponent {
   constructor(
     private router: Router,
     private messageService: MessageService,
-    private authService: AuthService
+    private authService: AuthService,
+    private storageService: StorageService
   ) {}
+
+  ngOnInit(): void {
+    if (this.storageService.isLoggedIn()) {
+      this.router.navigate(['/']);
+    }
+  }
 
   showTermsAndConditions() {
     this.termsAndConditionsVisible = true;

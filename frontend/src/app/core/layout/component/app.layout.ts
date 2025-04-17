@@ -12,6 +12,7 @@ import { LayoutService } from '../service/layout.service';
   imports: [CommonModule, AppTopbar, RouterModule, AppFooter],
   template: `<div class="layout-wrapper">
     <app-topbar></app-topbar>
+    <!-- <app-sidebar></app-sidebar> -->
     <div class="layout-main-container">
       <div class="layout-main">
         <div class="card"><router-outlet></router-outlet></div>

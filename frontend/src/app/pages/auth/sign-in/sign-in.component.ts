@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -16,7 +16,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   imports: [PrimeNgModule, RpgLoadingComponent],
   providers: [MessageService],
 })
-export class SignInComponent {
+export class SignInComponent implements OnInit {
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', Validators.required),
@@ -30,6 +30,13 @@ export class SignInComponent {
     private messageService: MessageService,
     private router: Router
   ) {}
+
+  ngOnInit(): void {
+    if (this.storageService.isLoggedIn()) {
+      console.log(this.storageService.isLoggedIn());
+      this.router.navigate(['/']);
+    }
+  }
 
   onSubmit(): void {
     if (this.loginForm.invalid) {

@@ -10,11 +10,14 @@ export class AuthGuard implements CanActivate {
   _router = inject(Router);
 
   canActivate(): boolean {
+    // Verifica se o usuário está logado
     if (this._storageService.isLoggedIn()) {
-      this._router.navigate(['/']);
-      return false;
-    } else {
+      // Se estiver logado, permite o acesso
       return true;
+    } else {
+      // Se não estiver logado, redireciona para a página de login
+      this._router.navigate(['/signin']);
+      return false;
     }
   }
 }

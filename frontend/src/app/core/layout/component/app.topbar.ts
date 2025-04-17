@@ -3,6 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { LayoutService } from '../service/layout.service';
 import { PrimeNgModule } from '../../../shared/primeng/primeng.module';
 import { StorageService } from '../../../core/authentication/storage.service';
 
@@ -19,7 +20,7 @@ import { StorageService } from '../../../core/authentication/storage.service';
 
       <div class="layout-topbar-actions flex items-center ml-auto">
         <div class="relative ml-3" *ngIf="isLoggedIn; else notLoggedIn">
-          <button (click)="userMenu?.toggle($event)" type="button" class="flex items-center text-sm rounded-full" aria-haspopup="true">
+          <button (click)="userMenu.toggle($event)" type="button" class="flex items-center text-sm rounded-full" aria-haspopup="true">
             <span class="sr-only">Abrir menu do usuário</span>
             <p-avatar
               [image]="userAvatar"
@@ -80,7 +81,7 @@ export class AppTopbar implements OnInit {
         {
           label: 'Configurations',
           icon: 'pi pi-fw pi-cog',
-          disabled: true,
+          isabled: true,
           command: () => this.navigate('/settings'),
         },
         { separator: true },
@@ -139,9 +140,11 @@ export class AppTopbar implements OnInit {
   logout(): void {
     this.storageService.removeToken();
     localStorage.removeItem('user');
+
     this.user = null;
     this.isLoggedIn = false;
-    this.userMenuItems = this.defineUserMenu(); // Atualiza o menu
+    this.userMenuItems = this.defineUserMenu(); // atualiza o menu
+
     this.router.navigate(['/']);
   }
 }
