@@ -16,16 +16,22 @@ const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
     origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST"],
   },
 });
 
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/game-tables", gameTableRoutes);
+const routes = [
+  { path: "/api/auth", route: authRoutes },
+  { path: "/api/users", route: userRoutes },
+  { path: "/api/game-tables", route: gameTableRoutes }
+];
+
+routes.forEach(({ path, route }) => {
+  app.use(path, route);
+});
 
 // Conexão do socket
 io.on("connection", (socket) => {
