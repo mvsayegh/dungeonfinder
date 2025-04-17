@@ -7,7 +7,7 @@ const authMiddleware = (req, res, next) => {
     : null;
 
   if (!token) {
-    return errorResponse(res, "No token provided", 401);  // Usando o responseHelper
+    return errorResponse(res, "No token provided", 401); // Usando o responseHelper
   }
 
   try {
@@ -16,9 +16,9 @@ const authMiddleware = (req, res, next) => {
     next();
   } catch (err) {
     if (err.name === "TokenExpiredError") {
-      return errorResponse(res, "Token expired", 401);  // Usando o responseHelper
+      return errorResponse(res, "Token expired", 401); // Usando o responseHelper
     }
-    return errorResponse(res, "Invalid token", 401);  // Usando o responseHelper
+    return errorResponse(res, "Invalid token", 401); // Usando o responseHelper
   }
 };
 

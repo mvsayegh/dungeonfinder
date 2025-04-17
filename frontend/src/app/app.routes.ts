@@ -6,10 +6,12 @@ export const appRoutes: Routes = [
   {
     path: 'signin',
     loadComponent: () => import('./pages/auth/sign-in/sign-in.component').then(m => m.SignInComponent),
+    canActivate: [AuthGuard],
   },
   {
     path: 'signup',
     loadComponent: () => import('./pages/auth/sign-up/sign-up.component').then(m => m.SignUpComponent),
+    canActivate: [AuthGuard],
   },
   {
     path: 'verify-email/:token',

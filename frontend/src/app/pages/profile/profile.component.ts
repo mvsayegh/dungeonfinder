@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { PrimeNgModule } from '../../shared/primeng/primeng.module';
+import { ProfileService } from '../../core/services/profile.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { finalize } from 'rxjs';
+import { MessageService } from 'primeng/api';
 
 interface ExperienceLevel {
   label: string;
@@ -38,7 +42,28 @@ interface User {
 @Component({
   selector: 'app-profile',
   imports: [PrimeNgModule],
+  providers: [MessageService],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
-export class ProfileComponent {}
+export class ProfileComponent {
+  loading = false;
+  userInfo = null;
+  constructor(
+    private service: ProfileService,
+    private messageService: MessageService
+  ) {
+    this.service
+      .getUser()
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: res => {
+          this.userInfo = res.response;
+        },
+        error: (err: HttpErrorResponse) => {
+          const msg = err?.message || 'Occurred an unknown error!';
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
+        },
+      });
+  }
+}
