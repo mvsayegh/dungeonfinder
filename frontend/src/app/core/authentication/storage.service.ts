@@ -1,6 +1,15 @@
 import { Injectable } from '@angular/core';
 
 const TOKEN_KEY = 'token';
+const USER_KEY = 'user';
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  verified: boolean;
+  profilePicture?: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -14,15 +23,13 @@ export class StorageService {
     return localStorage.getItem(TOKEN_KEY);
   }
 
-  public getUser(): string | null {
-    const token = this.getToken();
-    if (token) {
-      const payload = token.split('.')[1];
-      const decodedPayload = atob(payload);
-      const user = JSON.parse(decodedPayload);
-      return user;
-    }
-    return null;
+  public setUser(user: User): void {
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+  }
+
+  public getUser(): User | null {
+    const data = localStorage.getItem(USER_KEY);
+    return data ? JSON.parse(data) : null;
   }
 
   public removeToken(): void {

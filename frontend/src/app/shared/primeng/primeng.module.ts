@@ -52,7 +52,7 @@ import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { TagModule } from 'primeng/tag';
-
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @NgModule({
   imports: [
     FormsModule,
@@ -108,6 +108,7 @@ import { TagModule } from 'primeng/tag';
     AvatarModule,
     AvatarGroupModule,
     TagModule,
+    ConfirmDialogModule,
   ],
   exports: [
     FormsModule,
@@ -163,6 +164,7 @@ import { TagModule } from 'primeng/tag';
     AvatarModule,
     AvatarGroupModule,
     TagModule,
+    ConfirmDialogModule,
   ],
 })
 export class PrimeNgModule {}

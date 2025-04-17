@@ -16,12 +16,16 @@ export interface RegisterRequest {
 
 export interface LoginResponse {
   success: boolean;
-  token: string;
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    verified: boolean;
+  message: string;
+  response: {
+    token: string;
+    user: {
+      id: string;
+      name: string;
+      email: string;
+      verified: boolean;
+      profilePicture?: string;
+    };
   };
 }
 

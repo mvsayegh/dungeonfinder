@@ -46,7 +46,8 @@ export class SignInComponent {
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
         next: res => {
-          this.storageService.setToken(res.token);
+          this.storageService.setToken(res.response.token);
+          this.storageService.setUser(res.response.user);
           this.messageService.add({ severity: 'success', summary: 'Login successful' });
           this.router.navigate(['/']); //to-do: redirect correto, verificar com o UX.
         },
