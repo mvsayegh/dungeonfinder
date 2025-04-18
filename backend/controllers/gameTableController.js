@@ -90,7 +90,6 @@ exports.getGameTableById = async (req, res) => {
   }
 };
 
-
 // Jogador entra direto na mesa
 exports.joinGameTable = async (req, res) => {
   const { gameTableId } = req.params;

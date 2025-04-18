@@ -5,6 +5,7 @@ const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const gameTableRoutes = require("./routes/gameTableRoutes");
 const userRoutes = require("./routes/userRoutes");
+const gameMasterRoutes = require("./routes/gameMasterRoutes")
 const app = express();
 
 require("dotenv").config();
@@ -27,7 +28,7 @@ const routes = [
   { path: "/api/auth", route: authRoutes },
   { path: "/api/users", route: userRoutes },
   { path: "/api/game-tables", route: gameTableRoutes },
-  { path: "/api/game-masters", route: ""}
+  { path: "/api/game-masters", route: gameMasterRoutes },
 ];
 
 routes.forEach(({ path, route }) => {

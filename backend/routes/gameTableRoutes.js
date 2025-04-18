@@ -23,4 +23,7 @@ router.post("/:gameTableId/request", authMiddleware, gameTableController.request
 // Mestre de jogo responde à solicitação
 router.put("/requests/:joinRequestId", authMiddleware, gameTableController.respondToJoinRequest);
 
+// Obter detalhes de uma mesa específica
+router.get("/:gameTableId", gameTableController.getGameTableById);
+
 module.exports = router;

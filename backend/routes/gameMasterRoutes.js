@@ -5,17 +5,16 @@ const isAdminMiddleware = require("../middlewares/isAdminMiddleware");
 const gameMasterController = require("../controllers/gameMasterController");
 
 // Criar nova mesa
-router.post("/", authMiddleware, gameMasterController.createGameTable);
+router.post("/", authMiddleware, gameMasterController.createGameMaster);
 
 // Atualizar ou deletar uma mesa específica
-router.put("/:gameMasterId", authMiddleware, gameMasterController.updateGameTable);
-router.delete("/:gameMasterId", authMiddleware, isAdminMiddleware, gameMasterController.deleteGameTable);
+router.put("/:gameMasterId", authMiddleware, gameMasterController.updateGameMaster);
+router.delete("/:gameMasterId", authMiddleware, isAdminMiddleware, gameMasterController.deleteGameMaster);
 
 // Lista de game masters
 router.get("/", gameMasterController.listGameMasters);
 
 // Buscar Game Master específico
-router.get("/:gameMasterId", gameMasterController.getGameMasterById);
+router.get("/:gameMasterId", gameMasterController.getGameMasterInfo);
 
-// Obter detalhes de uma mesa específica
-router.get("/:gameTableId", gameTableController.getGameTableById);
+module.exports = router;
