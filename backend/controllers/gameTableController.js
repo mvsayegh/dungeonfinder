@@ -74,6 +74,23 @@ exports.listAvailableGameTables = async (req, res) => {
   }
 };
 
+// Obter detalhes de uma mesa específica
+exports.getGameTableById = async (req, res) => {
+  try {
+    const { gameTableId } = req.params;
+    const gameTable = await gameTableService.getGameTableById(gameTableId);
+
+    if (!gameTable) {
+      return errorResponse(res, "Game Table not found", 404);
+    }
+
+    return successResponse(res, { gameTable }, "Game Table fetched successfully");
+  } catch (err) {
+    return errorResponse(res, err.message, 500);
+  }
+};
+
+
 // Jogador entra direto na mesa
 exports.joinGameTable = async (req, res) => {
   const { gameTableId } = req.params;

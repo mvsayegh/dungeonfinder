@@ -102,6 +102,15 @@ const respondToJoinRequest = async (joinRequestId, action, userId) => {
   return joinRequest;
 };
 
+const getGameTableById = async (gameTableId) => {
+  const gameTable = await GameTable.findById(gameTableId)
+    .populate("gameMasterId", "name nickname")
+    .populate("players", "name email"); // se quiser incluir jogadores
+
+  return gameTable;
+};
+
+
 module.exports = {
   createGameTable,
   updateGameTable,
@@ -110,4 +119,5 @@ module.exports = {
   joinGameTable,
   requestJoinGameTable,
   respondToJoinRequest,
+  getGameTableById
 };

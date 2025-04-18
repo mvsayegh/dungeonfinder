@@ -26,7 +26,8 @@ app.use(express.json());
 const routes = [
   { path: "/api/auth", route: authRoutes },
   { path: "/api/users", route: userRoutes },
-  { path: "/api/game-tables", route: gameTableRoutes }
+  { path: "/api/game-tables", route: gameTableRoutes },
+  { path: "/api/game-masters", route: ""}
 ];
 
 routes.forEach(({ path, route }) => {
