@@ -56,7 +56,7 @@ export class SignInComponent implements OnInit {
           this.storageService.setToken(res.response.token);
           this.storageService.setUser(res.response.user);
           this.messageService.add({ severity: 'success', summary: 'Login successful' });
-          this.router.navigate(['/']); //to-do: redirect correto, verificar com o UX.
+          this.router.navigate(['/']);
         },
         error: (err: HttpErrorResponse) => {
           const msg = err?.message || 'Occurred an unknown error!';

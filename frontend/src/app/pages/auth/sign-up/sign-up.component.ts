@@ -80,7 +80,7 @@ export class SignUpComponent implements OnInit {
             });
             this.registerForm.disable();
             setTimeout(() => {
-              this.router.navigate(['/']);
+              this.router.navigate(['/signin']);
             }, 2000);
           } else {
             this.messageService.add({
