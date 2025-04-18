@@ -13,7 +13,7 @@ const GameMasterSchema = new mongoose.Schema(
     },
     bio: String,
     image: String,
-    gameMasterId: {
+    createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,

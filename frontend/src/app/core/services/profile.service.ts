@@ -23,6 +23,6 @@ export class ProfileService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.get<any>(`user/info`, { headers });
+    return this.http.get<any>(`users/me`, { headers });
   }
 }

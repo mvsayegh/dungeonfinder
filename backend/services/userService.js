@@ -76,7 +76,7 @@ const listUserTables = async (userId, { page = 1, limit = 10 }) => {
     const skip = (pageNumber - 1) * pageSize;
 
     // Mesas do Mestre de Jogo
-    const gameMasterTables = await GameTable.find({ gameMasterId: userId })
+    const gameMasterTables = await GameTable.find({ createdBy: userId })
       .skip(skip)
       .limit(pageSize)
       .exec();
@@ -89,7 +89,7 @@ const listUserTables = async (userId, { page = 1, limit = 10 }) => {
 
     // Contagem total de mesas para paginação
     const totalGameMasterTables = await GameTable.countDocuments({
-      gameMasterId: userId,
+      createdBy: userId,
     });
     const totalPlayerTables = await GameTable.countDocuments({
       players: userId,

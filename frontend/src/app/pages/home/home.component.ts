@@ -4,7 +4,7 @@ import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 import { GameTableService } from '../../core/services/game-table.service';
 import { finalize } from 'rxjs';
 
-interface GameMaster {
+interface Creator {
   _id: string;
   name: string;
 }
@@ -14,7 +14,7 @@ interface Table {
   title: string;
   system: string;
   description: string;
-  gameMasterId?: GameMaster;
+  createdBy?: Creator;
   time: Date;
   players?: any[];
   image?: string;

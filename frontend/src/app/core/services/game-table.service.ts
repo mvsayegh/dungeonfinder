@@ -22,6 +22,6 @@ export class GameTableService {
     Object.entries(queryParams).forEach(([key, value]) => {
       params = params.set(key, value.toString());
     });
-    return this.http.get(`games/available`, { params });
+    return this.http.get(`game-tables`, { params });
   }
 }

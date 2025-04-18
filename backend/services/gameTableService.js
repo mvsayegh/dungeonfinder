@@ -4,7 +4,7 @@ const JoinRequest = require("../models/JoinRequest");
 const createGameTable = async (userId, gameTableData) => {
   const newGameTable = new GameTable({
     ...gameTableData,
-    gameMasterId: userId,
+    createdBy: userId,
   });
 
   await newGameTable.save();
@@ -14,7 +14,7 @@ const createGameTable = async (userId, gameTableData) => {
 const updateGameTable = async (gameTableId, updates, userId) => {
   const gameTable = await GameTable.findById(gameTableId);
   if (!gameTable) throw new Error("Game Table not found");
-  if (gameTable.gameMasterId.toString() !== userId) throw new Error("Unauthorized");
+  if (gameTable.createdBy.toString() !== userId) throw new Error("Unauthorized");
 
   Object.assign(gameTable, updates);
   await gameTable.save();
@@ -24,7 +24,7 @@ const updateGameTable = async (gameTableId, updates, userId) => {
 const deleteGameTable = async (gameTableId, userId) => {
   const gameTable = await GameTable.findById(gameTableId);
   if (!gameTable) throw new Error("Game Table not found");
-  if (gameTable.gameMasterId.toString() !== userId) throw new Error("Unauthorized");
+  if (gameTable.createdBy.toString() !== userId) throw new Error("Unauthorized");
 
   await gameTable.remove();
   return true;
@@ -41,7 +41,7 @@ const listAvailableGameTables = async (page = 1, limit = 10, filters = {}) => {
   const gameTables = await GameTable.find(query)
     .skip(skip)
     .limit(limit)
-    .populate("gameMasterId", "name")
+    .populate("createdBy", "name")
     .exec();
 
   const totalGameTables = await GameTable.countDocuments(query);
@@ -85,7 +85,7 @@ const respondToJoinRequest = async (joinRequestId, action, userId) => {
   const joinRequest = await JoinRequest.findById(joinRequestId).populate("gameTableId playerId");
   if (!joinRequest) throw new Error("Join Request not found");
 
-  const isGameMaster = joinRequest.gameTableId.gameMasterId.toString() === userId;
+  const isGameMaster = joinRequest.gameTableId.createdBy.toString() === userId;
   if (!isGameMaster) throw new Error("Unauthorized");
 
   if (!["ACCEPTED", "REJECTED"].includes(action)) throw new Error("Invalid action");
@@ -104,7 +104,7 @@ const respondToJoinRequest = async (joinRequestId, action, userId) => {
 
 const getGameTableById = async (gameTableId) => {
   const gameTable = await GameTable.findById(gameTableId)
-    .populate("gameMasterId", "name nickname")
+    .populate("createdBy", "name nickname")
     .populate("players", "name email"); // se quiser incluir jogadores
 
   return gameTable;

@@ -3,17 +3,17 @@ const GameMaster = require("../models/GameMaster");
 const createGameMaster = async (userId, gameMasterData) => {
   const newGameMaster = new GameMaster({
     ...gameMasterData,
-    gameMasterId: userId,
+    createdBy: userId,
   });
 
   await newGameMaster.save();
   return newGameMaster;
 };
 
-const updateGameMaster = async (gameMasterId, updates, userId) => {
-  const gameMaster = await GameMaster.findById(gameMasterId);
+const updateGameMaster = async (createdBy, updates, userId) => {
+  const gameMaster = await GameMaster.findById(createdBy);
   if (!gameMaster) throw new Error("Game Master not found");
-  if (gameMaster.gameMasterId.toString() !== userId)
+  if (gameMaster.createdBy.toString() !== userId)
     throw new Error("Unauthorized");
 
   Object.assign(gameMaster, updates);
@@ -21,10 +21,10 @@ const updateGameMaster = async (gameMasterId, updates, userId) => {
   return gameMaster;
 };
 
-const deleteGameMaster = async (gameMasterId, userId) => {
-  const gameMaster = await GameMaster.findById(gameMasterId);
+const deleteGameMaster = async (createdBy, userId) => {
+  const gameMaster = await GameMaster.findById(createdBy);
   if (!gameMaster) throw new Error("Game Master not found");
-  if (gameMaster.gameMasterId.toString() !== userId)
+  if (gameMaster.createdBy.toString() !== userId)
     throw new Error("Unauthorized");
 
   await gameMaster.remove();
@@ -53,8 +53,8 @@ const getGameMasters = async (filters, page, limit) => {
   };
 };
 
-const getGameMasterInfo = async (gameMasterId) => {
-  const gameMaster = await GameMaster.findById(gameMasterId);
+const getGameMasterInfo = async (createdBy) => {
+  const gameMaster = await GameMaster.findById(createdBy);
 
   if (!gameMaster) return null;
   return gameMaster;
