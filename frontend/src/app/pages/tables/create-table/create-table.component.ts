@@ -84,6 +84,7 @@ export class CreateTableComponent implements OnInit {
       .subscribe({
         next: res => {
           console.log(res);
+          this.messageService.add({ severity: 'success', summary: 'Success!', detail: res.message });
         },
         error: (err: HttpErrorResponse) => {
           const msg = err?.message || 'Occurred an unknown error!';
