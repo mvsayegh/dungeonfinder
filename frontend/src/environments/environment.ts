@@ -8,6 +8,6 @@ export const environment = {
   },
   config: {
     production: false,
-    url: 'http://localhost:5000/api/',
+    url: 'https://dungeonfinder.onrender.com/api/',
   },
 };
