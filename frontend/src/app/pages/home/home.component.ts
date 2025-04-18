@@ -137,10 +137,10 @@ export class HomeComponent implements OnInit {
       .listAvailableTables(page, limit, this.filters.status, this.filters.system, this.filters.title, this.filters.duration)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
-        next: (response: any) => {
-          this.tables = response.gameTables;
-          this.pagination.totalItems = response?.pagination?.totalItems || 0;
-          this.pagination.totalPages = response?.pagination?.totalPages || 1;
+        next: (res: any) => {
+          this.tables = res.response.gameTables;
+          this.pagination.totalItems = res?.response?.pagination?.totalItems || 0;
+          this.pagination.totalPages = res?.response?.pagination?.totalPages || 1;
         },
         error: err => {
           console.error('Erro ao buscar mesas:', err);

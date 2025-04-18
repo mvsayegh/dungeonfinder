@@ -14,7 +14,8 @@ const createGameTable = async (userId, gameTableData) => {
 const updateGameTable = async (gameTableId, updates, userId) => {
   const gameTable = await GameTable.findById(gameTableId);
   if (!gameTable) throw new Error("Game Table not found");
-  if (gameTable.createdBy.toString() !== userId) throw new Error("Unauthorized");
+  if (gameTable.createdBy.toString() !== userId)
+    throw new Error("Unauthorized");
 
   Object.assign(gameTable, updates);
   await gameTable.save();
@@ -24,7 +25,8 @@ const updateGameTable = async (gameTableId, updates, userId) => {
 const deleteGameTable = async (gameTableId, userId) => {
   const gameTable = await GameTable.findById(gameTableId);
   if (!gameTable) throw new Error("Game Table not found");
-  if (gameTable.createdBy.toString() !== userId) throw new Error("Unauthorized");
+  if (gameTable.createdBy.toString() !== userId)
+    throw new Error("Unauthorized");
 
   await gameTable.remove();
   return true;
@@ -32,18 +34,35 @@ const deleteGameTable = async (gameTableId, userId) => {
 
 const listAvailableGameTables = async (page = 1, limit = 10, filters = {}) => {
   const skip = (page - 1) * limit;
-  const query = { status: "OPEN", ...filters };
 
+  // Inicialize o filtro com o status 'OPEN'
+  const query = { status: "OPEN" };
+
+  // Adicione filtros dinamicamente se eles existirem
   if (filters.title) {
     query.title = { $regex: new RegExp(filters.title, "i") };
   }
 
+  if (filters.system) {
+    query.system = filters.system;
+  }
+
+  if (filters.duration) {
+    query.duration = filters.duration;
+  }
+
+  if (filters.status) {
+    query.status = filters.status;
+  }
+
+  // Agora faça a busca com a query construída
   const gameTables = await GameTable.find(query)
     .skip(skip)
     .limit(limit)
     .populate("createdBy", "name")
     .exec();
 
+  // Contagem total de documentos com os filtros aplicados
   const totalGameTables = await GameTable.countDocuments(query);
   const totalPages = Math.ceil(totalGameTables / limit);
 
@@ -54,7 +73,8 @@ const joinGameTable = async (gameTableId, userId) => {
   const gameTable = await GameTable.findById(gameTableId);
   if (!gameTable) throw new Error("Game Table not found");
   if (gameTable.players.includes(userId)) throw new Error("Already joined");
-  if (gameTable.players.length >= gameTable.maxPlayers) throw new Error("Game Table is full");
+  if (gameTable.players.length >= gameTable.maxPlayers)
+    throw new Error("Game Table is full");
 
   gameTable.players.push(userId);
   await gameTable.save();
@@ -70,7 +90,8 @@ const requestJoinGameTable = async (gameTableId, userId) => {
     playerId: userId,
     status: "PENDING",
   });
-  if (existingRequest) throw new Error("Already requested to join this game table");
+  if (existingRequest)
+    throw new Error("Already requested to join this game table");
 
   const joinRequest = new JoinRequest({
     gameTableId,
@@ -82,13 +103,16 @@ const requestJoinGameTable = async (gameTableId, userId) => {
 };
 
 const respondToJoinRequest = async (joinRequestId, action, userId) => {
-  const joinRequest = await JoinRequest.findById(joinRequestId).populate("gameTableId playerId");
+  const joinRequest = await JoinRequest.findById(joinRequestId).populate(
+    "gameTableId playerId"
+  );
   if (!joinRequest) throw new Error("Join Request not found");
 
   const isGameMaster = joinRequest.gameTableId.createdBy.toString() === userId;
   if (!isGameMaster) throw new Error("Unauthorized");
 
-  if (!["ACCEPTED", "REJECTED"].includes(action)) throw new Error("Invalid action");
+  if (!["ACCEPTED", "REJECTED"].includes(action))
+    throw new Error("Invalid action");
 
   joinRequest.status = action;
   await joinRequest.save();
@@ -110,7 +134,6 @@ const getGameTableById = async (gameTableId) => {
   return gameTable;
 };
 
-
 module.exports = {
   createGameTable,
   updateGameTable,
@@ -119,5 +142,5 @@ module.exports = {
   joinGameTable,
   requestJoinGameTable,
   respondToJoinRequest,
-  getGameTableById
+  getGameTableById,
 };

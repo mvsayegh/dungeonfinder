@@ -52,11 +52,29 @@ exports.deleteGameTable = async (req, res) => {
 // Listar mesas
 exports.listAvailableGameTables = async (req, res) => {
   try {
+    // Convertendo page e limit para números inteiros
     const { page = 1, limit = 10, status, system, title, duration } = req.query;
+
+    // Garantir que os parâmetros são números
+    const parsedPage = parseInt(page, 10);
+    const parsedLimit = parseInt(limit, 10);
+
+    // Verificação para garantir que page e limit sejam valores válidos
+    if (isNaN(parsedPage) || parsedPage < 1) {
+      throw new Error("Página inválida");
+    }
+
+    if (isNaN(parsedLimit) || parsedLimit < 1) {
+      throw new Error("Limite inválido");
+    }
+
+    // Preparando os filtros
     const filters = { status, system, title, duration };
+
+    // Chama o serviço passando os parâmetros
     const result = await gameTableService.listAvailableGameTables(
-      parseInt(page),
-      parseInt(limit),
+      parsedPage, // Usando parsedPage
+      parsedLimit, // Usando parsedLimit
       filters
     );
 
@@ -65,8 +83,8 @@ exports.listAvailableGameTables = async (req, res) => {
       pagination: {
         totalPages: result.totalPages,
         totalGameTables: result.totalGameTables,
-        pageNumber: parseInt(page),
-        pageSize: parseInt(limit),
+        pageNumber: parsedPage,
+        pageSize: parsedLimit,
       },
     });
   } catch (err) {
@@ -84,7 +102,11 @@ exports.getGameTableById = async (req, res) => {
       return errorResponse(res, "Game Table not found", 404);
     }
 
-    return successResponse(res, { gameTable }, "Game Table fetched successfully");
+    return successResponse(
+      res,
+      { gameTable },
+      "Game Table fetched successfully"
+    );
   } catch (err) {
     return errorResponse(res, err.message, 500);
   }

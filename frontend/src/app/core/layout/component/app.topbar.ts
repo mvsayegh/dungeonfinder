@@ -40,6 +40,7 @@ import { StorageService } from '../../../core/authentication/storage.service';
         </ng-template>
       </div>
     </div>
+    <p-confirm-dialog></p-confirm-dialog>
     <p-toast></p-toast>
   `,
   styles: [':host { --p-card-body-padding: 5px 20px; }'],
@@ -75,7 +76,6 @@ export class AppTopbar implements OnInit {
         {
           label: 'My Tables',
           icon: 'pi pi-fw pi-table',
-          disabled: true,
           command: () => this.navigate('/tables'),
         },
         {

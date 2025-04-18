@@ -7,6 +7,7 @@ const GameTableSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
+      unique: true
     },
     description: String,
     image: String,

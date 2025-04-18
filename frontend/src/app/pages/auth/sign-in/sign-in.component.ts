@@ -63,9 +63,6 @@ export class SignInComponent implements OnInit {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
           this.loginForm.get('password')?.reset();
         },
-        complete: () => {
-          this.loading = false;
-        },
       });
   }
 }

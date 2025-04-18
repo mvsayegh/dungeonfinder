@@ -10,11 +10,13 @@ import DFTheme from './themes/mytheme';
 import ptBr from '@angular/common/locales/pt';
 import { registerLocaleData } from '@angular/common';
 import { MessageService } from 'primeng/api';
+import { AuthInterceptor } from './core/middleware/auth.interceptor';
 registerLocaleData(ptBr);
 
 const INTERCEPTORS = [
   { provide: HTTP_INTERCEPTORS, useClass: ApiBaseUrlInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   { provide: LOCALE_ID, useValue: 'pt-BR' },
 ];
 

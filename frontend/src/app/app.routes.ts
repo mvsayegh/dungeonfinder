@@ -28,6 +28,11 @@ export const appRoutes: Routes = [
         loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent),
         canActivate: [AuthGuard],
       },
+      {
+        path: 'tables',
+        loadComponent: () => import('./pages/tables/create-table/create-table.component').then(m => m.CreateTableComponent),
+        canActivate: [AuthGuard],
+      },
     ],
   },
   { path: 'notfound', component: Notfound },

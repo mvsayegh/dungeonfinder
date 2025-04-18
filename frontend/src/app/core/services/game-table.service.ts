@@ -24,4 +24,8 @@ export class GameTableService {
     });
     return this.http.get(`game-tables`, { params });
   }
+
+  createGameTable(data: any): Observable<any> {
+    return this.http.post(`game-tables`, data);
+  }
 }
