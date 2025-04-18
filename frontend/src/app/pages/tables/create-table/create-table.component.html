@@ -16,7 +16,7 @@
 
     <div>
       <label class="block font-medium mb-1">Imagem</label>
-      <p-fileUpload name="image" [auto]="true" accept="image/*" maxFileSize="1000000" customUpload="true" (uploadHandler)="onImageSelected($event)">
+      <p-fileUpload name="image" [auto]="true" accept="image/*" maxFileSize="1000000" mode="basic" (uploadHandler)="onImageSelected($event)">
         <ng-template #empty>
           <div>Arraste a imagem aqui ou clique para selecionar.</div>
         </ng-template>
