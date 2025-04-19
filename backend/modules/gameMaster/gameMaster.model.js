@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
 const GameMasterSchema = new mongoose.Schema(
   {
@@ -27,14 +27,14 @@ const GameMasterSchema = new mongoose.Schema(
     },
     socialMedia: {
       twitter: { type: String, default: null },
-      twitch: { type: String },
-      facebook: { type: String },
-      instagram: { type: String },
-      tiktok: { type: String },
-      youtube: { type: String },
+      twitch: { type: String, default: null },
+      facebook: { type: String, default: null },
+      instagram: { type: String, default: null },
+      tiktok: { type: String, default: null},
+      youtube: { type: String, default: null },
     },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("GameMaster", GameMasterSchema);
+export default mongoose.model("GameMaster", GameMasterSchema);

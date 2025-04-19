@@ -1,4 +1,4 @@
-const RPG_STATUS = [
+const RPG_SYSTEMS = [
   'DND_5E',
   'DND_3_5',
   'DND_4E',
@@ -53,5 +53,4 @@ const RPG_STATUS = [
   'CYPHER_SYSTEM',
   'CUSTOM'
 ];
-
-module.exports = { RPG_STATUS };
+export default RPG_SYSTEMS;

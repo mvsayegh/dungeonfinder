@@ -1,4 +1,5 @@
-const GameMaster = require("../models/GameMaster");
+import GameMaster from "./gameMaster.model.js";
+import { NotFoundError, UnauthorizedError } from "../../errors/CustomErrors.js";
 
 const createGameMaster = async (userId, gameMasterData) => {
   const newGameMaster = new GameMaster({
@@ -12,9 +13,9 @@ const createGameMaster = async (userId, gameMasterData) => {
 
 const updateGameMaster = async (createdBy, updates, userId) => {
   const gameMaster = await GameMaster.findById(createdBy);
-  if (!gameMaster) throw new Error("Game Master not found");
+  if (!gameMaster) throw new NotFoundError("Game Master not found");
   if (gameMaster.createdBy.toString() !== userId)
-    throw new Error("Unauthorized");
+    throw new UnauthorizedError("You are not the owner of this game master");
 
   Object.assign(gameMaster, updates);
   await gameMaster.save();
@@ -23,9 +24,9 @@ const updateGameMaster = async (createdBy, updates, userId) => {
 
 const deleteGameMaster = async (createdBy, userId) => {
   const gameMaster = await GameMaster.findById(createdBy);
-  if (!gameMaster) throw new Error("Game Master not found");
+  if (!gameMaster) throw new NotFoundError("Game Master not found");
   if (gameMaster.createdBy.toString() !== userId)
-    throw new Error("Unauthorized");
+    throw new UnauthorizedError("You are not the owner of this game master");
 
   await gameMaster.remove();
   return true;
@@ -56,14 +57,16 @@ const getGameMasters = async (filters, page, limit) => {
 const getGameMasterInfo = async (createdBy) => {
   const gameMaster = await GameMaster.findById(createdBy);
 
-  if (!gameMaster) return null;
+  if (!gameMaster) throw new NotFoundError("Game Master not found");
   return gameMaster;
 };
 
-module.exports = {
+const gameMasterService = {
   createGameMaster,
   updateGameMaster,
   deleteGameMaster,
   getGameMasters,
   getGameMasterInfo,
 };
+
+export default gameMasterService;

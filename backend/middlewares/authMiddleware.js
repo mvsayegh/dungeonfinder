@@ -1,25 +1,30 @@
-const jwt = require("jsonwebtoken");
-const { errorResponse } = require("../utils/responseHelper");
+import jwt from "jsonwebtoken";
+import { errorResponse } from "../utils/responseHelper.js";
 
+// Middleware de autenticação
 const authMiddleware = (req, res, next) => {
-  const token = req.header("Authorization")?.startsWith("Bearer ")
-    ? req.header("Authorization").replace("Bearer ", "")
-    : null;
+  const token =
+    req.header("Authorization")?.replace("Bearer ", "") ||
+    req.query.token ||
+    null;
 
+  // Se não houver token, retorna erro
   if (!token) {
-    return errorResponse(res, "No token provided", 401); // Usando o responseHelper
+    return errorResponse(res, "No token provided", 401);
   }
 
   try {
+    // Verifica e decodifica o token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
-    next();
+    next(); // Chama o próximo middleware ou rota
   } catch (err) {
-    if (err.name === "TokenExpiredError") {
-      return errorResponse(res, "Token expired", 401); // Usando o responseHelper
-    }
-    return errorResponse(res, "Invalid token", 401); // Usando o responseHelper
+    // Verifica o tipo de erro de token
+    const errorMessage =
+      err.name === "TokenExpiredError" ? "Token expired" : "Invalid token";
+
+    return errorResponse(res, errorMessage, 401);
   }
 };
 
-module.exports = authMiddleware;
+export default authMiddleware;

@@ -1,18 +1,23 @@
-const User = require('../models/User');
+import { errorResponse } from "../utils/responseHelper.js";
+import User from "../modules/user/user.model.js"
 
-const isAdminMiddleware = (req, res, next) => {
-  const userId = req.user.id;  // Recuperando o userId do token decodificado
+const isAdminMiddleware = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const user = await User.findById(userId);
 
-  User.findById(userId)
-    .then(user => {
-      if (user.role !== 'admin') {
-        return res.status(403).json({ message: 'Access denied: Admin only' });
-      }
-      next();
-    })
-    .catch(err => {
-      return res.status(500).json({ message: 'Error checking user role' });
-    });
+    if (!user) {
+      return errorResponse(res, 'User not found', 404);
+    }
+
+    if (user.role !== 'admin') {
+      return errorResponse(res, 'Access denied: Admin only', 403);
+    }
+
+    next();
+  } catch (err) {
+    return errorResponse(res, 'Error checking user role', 500);
+  }
 };
 
-module.exports = isAdminMiddleware;
+export default isAdminMiddleware;
