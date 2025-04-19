@@ -25,25 +25,25 @@ const buildGameTableQuery = (filters = {}) => {
   }, baseQuery);
 };
 
-const createGameTable = async (userId, data) => {
+export const createGameTable = async (userId, data) => {
   return await new GameTable({ ...data, createdBy: userId }).save();
 };
 
-const updateGameTable = async (id, updates, userId) => {
+export const updateGameTable = async (id, updates, userId) => {
   const gameTable = await findOrFail(GameTable, id, "Game Table not found");
   assertOwnership(gameTable, userId);
   Object.assign(gameTable, updates);
   return await gameTable.save();
 };
 
-const deleteGameTable = async (id, userId) => {
+export const deleteGameTable = async (id, userId) => {
   const gameTable = await findOrFail(GameTable, id, "Game Table not found");
   assertOwnership(gameTable, userId);
   await gameTable.remove();
   return true;
 };
 
-const listAvailableGameTables = async (page = 1, limit = 10, filters = {}) => {
+export const listAvailableGameTables = async (page = 1, limit = 10, filters = {}) => {
   const skip = (page - 1) * limit;
   const query = buildGameTableQuery(filters);
 
@@ -59,7 +59,7 @@ const listAvailableGameTables = async (page = 1, limit = 10, filters = {}) => {
   };
 };
 
-const joinGameTable = async (gameTableId, userId) => {
+export const joinGameTable = async (gameTableId, userId) => {
   const table = await findOrFail(GameTable, gameTableId, "Game Table not found");
 
   if (table.players.includes(userId)) throw new BadRequestError("Already joined this game table");
@@ -69,7 +69,7 @@ const joinGameTable = async (gameTableId, userId) => {
   return await table.save();
 };
 
-const requestJoinGameTable = async (gameTableId, userId) => {
+export const requestJoinGameTable = async (gameTableId, userId) => {
   await findOrFail(GameTable, gameTableId, "Game Table not found");
 
   const exists = await JoinRequest.findOne({ gameTableId, playerId: userId, status: "PENDING" });
@@ -78,7 +78,7 @@ const requestJoinGameTable = async (gameTableId, userId) => {
   return await new JoinRequest({ gameTableId, playerId: userId }).save();
 };
 
-const respondToJoinRequest = async (requestId, action, userId) => {
+export const respondToJoinRequest = async (requestId, action, userId) => {
   const request = await JoinRequest.findById(requestId).populate("gameTableId").populate("playerId");
 
   if (!request) throw new NotFoundError("Join Request not found");
@@ -97,7 +97,7 @@ const respondToJoinRequest = async (requestId, action, userId) => {
   return request;
 };
 
-const getGameTableById = async (id) => {
+export const getGameTableById = async (id) => {
   const table = await GameTable.findById(id)
     .populate("createdBy", "name nickname")
     .populate("players", "name email");

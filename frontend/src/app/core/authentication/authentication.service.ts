@@ -17,7 +17,7 @@ export interface RegisterRequest {
 export interface LoginResponse {
   success: boolean;
   message: string;
-  response: {
+  data: {
     token: string;
     user: {
       id: string;

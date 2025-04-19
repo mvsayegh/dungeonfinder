@@ -138,9 +138,9 @@ export class HomeComponent implements OnInit {
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: (res: any) => {
-          this.tables = res.response.gameTables;
-          this.pagination.totalItems = res?.response?.pagination?.totalItems || 0;
-          this.pagination.totalPages = res?.response?.pagination?.totalPages || 1;
+          this.tables = res.data.gameTables;
+          this.pagination.totalItems = res?.data?.pagination?.totalItems || 0;
+          this.pagination.totalPages = res?.data?.pagination?.totalPages || 1;
         },
         error: err => {
           console.error('Erro ao buscar mesas:', err);

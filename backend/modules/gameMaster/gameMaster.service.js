@@ -1,7 +1,7 @@
 import GameMaster from "./gameMaster.model.js";
 import { NotFoundError, UnauthorizedError } from "../../errors/CustomErrors.js";
 
-const createGameMaster = async (userId, gameMasterData) => {
+export const createGameMaster = async (userId, gameMasterData) => {
   const newGameMaster = new GameMaster({
     ...gameMasterData,
     createdBy: userId,
@@ -11,7 +11,7 @@ const createGameMaster = async (userId, gameMasterData) => {
   return newGameMaster;
 };
 
-const updateGameMaster = async (createdBy, updates, userId) => {
+export const updateGameMaster = async (createdBy, updates, userId) => {
   const gameMaster = await GameMaster.findById(createdBy);
   if (!gameMaster) throw new NotFoundError("Game Master not found");
   if (gameMaster.createdBy.toString() !== userId)
@@ -22,7 +22,7 @@ const updateGameMaster = async (createdBy, updates, userId) => {
   return gameMaster;
 };
 
-const deleteGameMaster = async (createdBy, userId) => {
+export const deleteGameMaster = async (createdBy, userId) => {
   const gameMaster = await GameMaster.findById(createdBy);
   if (!gameMaster) throw new NotFoundError("Game Master not found");
   if (gameMaster.createdBy.toString() !== userId)
@@ -32,7 +32,7 @@ const deleteGameMaster = async (createdBy, userId) => {
   return true;
 };
 
-const getGameMasters = async (filters, page, limit) => {
+export const getGameMasters = async (filters, page, limit) => {
   const skip = (page - 1) * limit;
 
   const [gameMasters, total] = await Promise.all([
@@ -54,7 +54,7 @@ const getGameMasters = async (filters, page, limit) => {
   };
 };
 
-const getGameMasterInfo = async (createdBy) => {
+export const getGameMasterInfo = async (createdBy) => {
   const gameMaster = await GameMaster.findById(createdBy);
 
   if (!gameMaster) throw new NotFoundError("Game Master not found");

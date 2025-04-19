@@ -1,3 +1,4 @@
+// auth.service.js
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../user/user.model.js";
@@ -18,11 +19,11 @@ const isStrongPassword = (password) => {
   return hasLowercase && hasUppercase && hasNumber && hasMinLength;
 };
 
-const register = async ({ name, email, password, role = "USER" }) => {
+// Função de registro
+export const register = async ({ name, email, password, role = "USER" }) => {
   const userExists = await User.findOne({ email });
   if (userExists) throw new BadRequestError("Email already exists");
 
-  // Validação de força da senha
   if (!isStrongPassword(password)) {
     throw new BadRequestError(
       "Password must have at least 8 characters, one lowercase, one uppercase, and one number"
@@ -46,10 +47,9 @@ const register = async ({ name, email, password, role = "USER" }) => {
   await sendVerificationEmail(user.email, verificationToken, user.name);
 };
 
-const login = async ({ email, password }) => {
-  const user = await User.findOne({ email }).select(
-    "+password +verificationToken"
-  );
+// Função de login
+export const login = async ({ email, password }) => {
+  const user = await User.findOne({ email }).select("+password +verificationToken");
   if (!user) throw new NotFoundError("User not found");
 
   const isMatch = await bcrypt.compare(password, user.password);
@@ -69,7 +69,8 @@ const login = async ({ email, password }) => {
   };
 };
 
-const verifyEmail = async (token) => {
+// Função de verificação de e-mail
+export const verifyEmail = async (token) => {
   const { email } = jwt.verify(token, process.env.JWT_SECRET);
   const user = await User.findOne({ email }).select("+verificationToken");
   if (!user) throw new BadRequestError("Invalid token");
@@ -79,9 +80,10 @@ const verifyEmail = async (token) => {
   await user.save();
 };
 
+// Exporta todas as funções
 const authService = {
   register,
-  login,
+  login, // Certifique-se de que a função login está sendo exportada
   verifyEmail,
 };
 

@@ -53,8 +53,8 @@ export class SignInComponent implements OnInit {
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
         next: res => {
-          this.storageService.setToken(res.response.token);
-          this.storageService.setUser(res.response.user);
+          this.storageService.setToken(res.data.token);
+          this.storageService.setUser(res.data.user);
           this.messageService.add({ severity: 'success', summary: 'Login successful' });
           this.router.navigate(['/']);
         },
