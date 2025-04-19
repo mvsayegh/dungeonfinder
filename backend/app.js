@@ -42,7 +42,7 @@ const limiter = rateLimit({
 
 // 🧩 Middleware Setup
 const corsOptions = {
-  origin: "http://localhost:4200",
+  origin: ["http://localhost:4200", "https://dungeonfinder-j2v6.onrender.com"],
   methods: ["GET", "POST"],
 };
 
