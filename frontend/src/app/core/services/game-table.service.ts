@@ -8,8 +8,6 @@ import { GameDuration, GameTable, PaginatedResponse } from '../models/game-table
   providedIn: 'root',
 })
 export class GameTableService {
-  private readonly baseUrl = 'game-tables';
-
   constructor(private http: HttpClient) {}
 
   getAll(
@@ -32,22 +30,22 @@ export class GameTableService {
       });
     }
 
-    return this.http.get<PaginatedResponse<GameTable>>(this.baseUrl, { params });
+    return this.http.get<PaginatedResponse<GameTable>>(`game-tables`, { params });
   }
 
   createGameTable(data: GameTable): Observable<GameTable> {
-    return this.http.post<GameTable>(this.baseUrl, data);
+    return this.http.post<GameTable>(`game-tables`, data);
   }
 
   getById(id: string): Observable<GameTable> {
-    return this.http.get<GameTable>(`${this.baseUrl}/${id}`);
+    return this.http.get<GameTable>(`game-tables/${id}`);
   }
 
   updateGameTable(id: string, data: Partial<GameTable>): Observable<GameTable> {
-    return this.http.put<GameTable>(`${this.baseUrl}/${id}`, data);
+    return this.http.put<GameTable>(`game-tables/${id}`, data);
   }
 
   deleteGameTable(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http.delete<void>(`game-tables/${id}`);
   }
 }
