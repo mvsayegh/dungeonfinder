@@ -9,10 +9,10 @@ import { MessageService } from 'primeng/api';
 import { FileUploadHandlerEvent } from 'primeng/fileupload';
 import { RPGDataService } from '../../../core/services/utils/rpg-data.service';
 
-interface UploadEvent {
-  originalEvent: Event;
-  files: File[];
-}
+// interface UploadEvent {
+//   originalEvent: Event;
+//   files: File[];
+// }
 
 @Component({
   selector: 'app-create-table',
@@ -22,7 +22,7 @@ interface UploadEvent {
 })
 export class CreateTableComponent implements OnInit {
   tableForm!: FormGroup;
-  uploadedFiles: any[] = [];
+  uploadedFiles: unknown[] = [];
   imagePreview: string | null = null;
   rpgSystems: { label: string; value: string }[] = [];
 
@@ -82,9 +82,8 @@ export class CreateTableComponent implements OnInit {
       .createGameTable(this.tableForm.value)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
-        next: res => {
-          console.log(res);
-          this.messageService.add({ severity: 'success', summary: 'Success!', detail: res.message });
+        next: () => {
+          // this.messageService.add({ severity: 'success', summary: 'Success!', detail: res.message });
         },
         error: (err: HttpErrorResponse) => {
           const msg = err?.message || 'Occurred an unknown error!';

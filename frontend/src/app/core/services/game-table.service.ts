@@ -1,31 +1,53 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { RPGStatus, RPGSystem } from '../models/rpg.model';
+import { GameDuration, GameTable, PaginatedResponse } from '../models/game-table.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameTableService {
+  private readonly baseUrl = 'game-tables';
+
   constructor(private http: HttpClient) {}
 
-  listAvailableTables(page: number, limit: number, status?: string, system?: string, title?: string, duration?: string): Observable<unknown> {
-    const queryParams: Record<string, string | number> = {
-      page,
-      limit,
-      ...(status && { status }),
-      ...(system && { system }),
-      ...(title && { title }),
-      ...(duration && { duration }),
-    };
+  getAll(
+    page: number,
+    limit: number,
+    filters?: {
+      status?: RPGStatus;
+      system?: RPGSystem;
+      title?: string;
+      duration?: GameDuration;
+    }
+  ): Observable<PaginatedResponse<GameTable>> {
+    let params = new HttpParams().set('page', page.toString()).set('limit', limit.toString());
 
-    let params = new HttpParams();
-    Object.entries(queryParams).forEach(([key, value]) => {
-      params = params.set(key, value.toString());
-    });
-    return this.http.get(`game-tables`, { params });
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value) {
+          params = params.set(key, value);
+        }
+      });
+    }
+
+    return this.http.get<PaginatedResponse<GameTable>>(this.baseUrl, { params });
   }
 
-  createGameTable(data: any): Observable<any> {
-    return this.http.post(`game-tables`, data);
+  createGameTable(data: GameTable): Observable<GameTable> {
+    return this.http.post<GameTable>(this.baseUrl, data);
+  }
+
+  getById(id: string): Observable<GameTable> {
+    return this.http.get<GameTable>(`${this.baseUrl}/${id}`);
+  }
+
+  updateGameTable(id: string, data: Partial<GameTable>): Observable<GameTable> {
+    return this.http.put<GameTable>(`${this.baseUrl}/${id}`, data);
+  }
+
+  deleteGameTable(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 }

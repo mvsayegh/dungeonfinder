@@ -74,10 +74,16 @@ export class AppTopbar implements OnInit {
           command: () => this.navigate('/profile'),
         },
         {
-          label: 'My Tables',
+          label: 'Tables',
           icon: 'pi pi-fw pi-table',
           command: () => this.navigate('/tables'),
         },
+        {
+          label: 'Become game master',
+          icon: 'pi pi-fw pi-crown',
+          command: () => this.navigate('/tables'),
+        },
+        { separator: true },
         {
           label: 'Configurations',
           icon: 'pi pi-fw pi-cog',

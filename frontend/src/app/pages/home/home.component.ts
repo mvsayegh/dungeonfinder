@@ -42,8 +42,8 @@ export class HomeComponent implements OnInit {
 
   pagination = {
     page: 1,
-    limit: 10,
-    totalItems: 0,
+    limit: 2,
+    totalItems: 1,
     totalPages: 1,
     first: 0,
   };
@@ -134,13 +134,14 @@ export class HomeComponent implements OnInit {
     const page = this.pagination.page;
     const limit = this.pagination.limit;
     this.gameTableService
-      .listAvailableTables(page, limit, this.filters.status, this.filters.system, this.filters.title, this.filters.duration)
+      .getAll(page, limit, this.filters.status)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: (res: any) => {
           this.tables = res.data.gameTables;
-          this.pagination.totalItems = res?.data?.pagination?.totalItems || 0;
+          this.pagination.totalItems = res?.data?.pagination?.totalGameTables || 0;
           this.pagination.totalPages = res?.data?.pagination?.totalPages || 1;
+          this.pagination.first = (this.pagination.page - 1) * this.pagination.limit;
         },
         error: err => {
           console.error('Erro ao buscar mesas:', err);
@@ -149,9 +150,10 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  onPageChange(event: any): void {
+  onPageChange(event: any) {
     this.pagination.page = event.page + 1;
     this.pagination.limit = event.rows;
+    this.pagination.first = event.first;
     this.loadTables();
   }
 
