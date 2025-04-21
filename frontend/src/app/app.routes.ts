@@ -30,7 +30,7 @@ export const appRoutes: Routes = [
       },
       {
         path: 'tables',
-        loadComponent: () => import('./pages/tables/create-table/create-table.component').then(m => m.CreateTableComponent),
+        loadComponent: () => import('./pages/tables/pages/create-table.page').then(m => m.CreateTablePage),
         canActivate: [AuthGuard],
       },
     ],

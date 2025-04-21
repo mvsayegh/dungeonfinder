@@ -15,12 +15,10 @@ export interface GameTable {
   system: RPGSystem;
   maxPlayers: number;
   status: RPGStatus;
-  time: string;
+  time: Date;
   duration: GameDuration;
   players: UserSummary[];
   createdBy: UserSummary;
-  createdAt: string;
-  updatedAt: string;
   __v: number;
 }
 
