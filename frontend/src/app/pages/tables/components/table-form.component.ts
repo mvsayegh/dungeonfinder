@@ -15,7 +15,7 @@ import { RPGDataService } from '../../../core/services/utils/rpg-data.service';
       </div>
       <div class="mb-2">
         <label for="description">Descrição</label>
-        <textarea id="description" pInputTextarea formControlName="description"></textarea>
+        <p-editor id="description" formControlName="description" [style]="{ height: '320px' }"></p-editor>
       </div>
       <div class="mb-2">
         <label for="system">Sistema</label>

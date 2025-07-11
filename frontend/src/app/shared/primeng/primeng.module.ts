@@ -56,6 +56,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TabsModule } from 'primeng/tabs';
 import { MessageService } from 'primeng/api';
 import { TextareaModule } from 'primeng/textarea';
+import { EditorModule } from 'primeng/editor';
 
 @NgModule({
   imports: [
@@ -115,6 +116,7 @@ import { TextareaModule } from 'primeng/textarea';
     ConfirmDialogModule,
     TabsModule,
     TextareaModule,
+    EditorModule,
   ],
   exports: [
     FormsModule,
@@ -173,6 +175,7 @@ import { TextareaModule } from 'primeng/textarea';
     ConfirmDialogModule,
     TabsModule,
     TextareaModule,
+    EditorModule,
   ],
   providers: [MessageService],
 })
