@@ -18,7 +18,6 @@ import errorHandler from './middlewares/errorHandler.js';
 import { authRoutes } from './modules/auth/index.js';
 import { userRoutes } from './modules/user/index.js';
 import { gameTableRoutes } from './modules/gameTable/index.js';
-import { gameMasterRoutes } from './modules/gameMaster/index.js';
 
 // 🎮 Socket Module
 import socketEvents from './socket/index.js';
@@ -60,8 +59,7 @@ app.use((req, res, next) => {
 const routes = [
   { path: "/api/auth", route: authRoutes },
   { path: "/api/users", route: userRoutes },
-  { path: "/api/game-tables", route: gameTableRoutes },
-  { path: "/api/game-masters", route: gameMasterRoutes },
+  { path: "/api/game-tables", route: gameTableRoutes }
 ];
 
 routes.forEach(({ path, route }) => app.use(path, route));

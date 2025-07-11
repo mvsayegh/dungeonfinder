@@ -1,4 +1,3 @@
-// auth.controller.js
 import * as authService from "./auth.service.js";
 import { successResponse } from "../../utils/responseHelper.js";
 import asyncHandler from "../../middlewares/asyncHandler.js";
@@ -13,7 +12,7 @@ const register = asyncHandler(async (req, res) => {
 // Login do usuário
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  const { token, user } = await authService.login({ email, password }); // Verifique se está chamando a função corretamente
+  const { token, user } = await authService.login({ email, password });
 
   successResponse(res, {
     token,

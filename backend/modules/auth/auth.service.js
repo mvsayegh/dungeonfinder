@@ -1,4 +1,3 @@
-// auth.service.js
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../user/user.model.js";

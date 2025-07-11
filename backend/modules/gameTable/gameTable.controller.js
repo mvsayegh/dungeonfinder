@@ -1,4 +1,3 @@
-// controller/gameTableController.js
 import * as gameTableService from "./gameTable.service.js";
 import { successResponse, errorResponse } from "../../utils/responseHelper.js";
 import asyncHandler from "../../middlewares/asyncHandler.js";

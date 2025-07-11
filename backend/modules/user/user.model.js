@@ -7,8 +7,8 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true, select: false },
     role: {
       type: String,
-      enum: ["USER", "ADMIN"],
-      default: "USER",
+      enum: ["PLAYER", "GAMEMASTER", "ADMIN"],
+      default: "PLAYER",
     },
     experienceLevel: {
       type: String,

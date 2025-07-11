@@ -2,8 +2,6 @@ import { Router } from "express";
 import authMiddleware from "../../middlewares/authMiddleware.js";
 import isAdminMiddleware from "../../middlewares/isAdminMiddleware.js";
 import * as gameTableController from "./user.controller.js";
-import { validate } from "../../middlewares/validate.js";
-import { userSchema } from "./user.schema.js";
 
 const router = Router();
 
@@ -17,10 +15,10 @@ router.get("/me", authMiddleware, gameTableController.getUserInfo);
 router.get("/me/tables", authMiddleware, gameTableController.listUserTables);
 
 // Admin: criar novo usuário
-router.post("/", authMiddleware, validate(userSchema), isAdminMiddleware, gameTableController.createUser);
+router.post("/", authMiddleware, isAdminMiddleware, gameTableController.createUser);
 
 // Atualizar dados do próprio usuário
-router.put("/me", authMiddleware, validate(userSchema), gameTableController.editUser);
+router.put("/me", authMiddleware, gameTableController.editUser);
 
 // Admin: deletar usuário por ID
 router.delete("/:id", authMiddleware, isAdminMiddleware, gameTableController.deleteUser);
