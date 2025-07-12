@@ -36,6 +36,8 @@ export const updateGameTable = async (id, updates, userId) => {
   return await gameTable.save();
 };
 
+
+// TODO somente o dono da mesa pode apagar
 export const deleteGameTable = async (id, userId) => {
   const gameTable = await findOrFail(GameTable, id, "Game Table not found");
   assertOwnership(gameTable, userId);
