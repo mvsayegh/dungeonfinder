@@ -1,8 +1,0 @@
-@use "tailwindcss";
-@use "primeicons/primeicons.css";
-@use './assets/layout/layout';
-@plugin "tailwindcss-primeui";
-// Ensure Tailwind CSS utilities are included
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
