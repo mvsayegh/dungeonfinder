@@ -1,5 +1,31 @@
 import mongoose from 'mongoose';
 
+const contactInfo = new mongoose.Schema(
+  {
+    discord: { type: String },
+    email: { type: String },
+    phone: { type: String },
+    website: { type: String },
+  },
+  {
+    _id: false,
+  }
+);
+
+const socialMedia = new mongoose.Schema(
+  {
+    twitter: { type: String },
+    twitch: { type: String },
+    facebook: { type: String },
+    instagram: { type: String },
+    tiktok: { type: String },
+    youtube: { type: String },
+  },
+  {
+    _id: false,
+  }
+);
+
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
@@ -22,20 +48,8 @@ const userSchema = new mongoose.Schema(
     profilePicture: String,
     bio: String,
     location: String,
-    contactInfo: {
-      discord: String,
-      email: String,
-      phone: String,
-      website: String,
-    },
-    socialMedia: {
-      twitter: String,
-      twitch: String,
-      facebook: String,
-      instagram: String,
-      tiktok: String,
-      youtube: String,
-    },
+    contactInfo: contactInfo,
+    socialMedia: socialMedia,
     verified: { type: Boolean, default: false },
     verificationToken: { type: String, select: false },
   },

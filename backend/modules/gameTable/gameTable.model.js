@@ -68,6 +68,10 @@ const GameTableSchema = new Schema(
       required: true,
       enum: GAME_DURATION,
     },
+    userGm: {
+      type: Types.ObjectId,
+      ref: "User",
+    },
     players: [
       {
         type: Types.ObjectId,
