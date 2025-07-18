@@ -17,7 +17,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    // background: url('/assets/images/rpg-pattern.png') repeat;
+    background: url('https://startplaying.games/_next/image?url=%2Fassets%2Fbackground%2Fcastle-island.webp&w=750&q=75') no-repeat center center;
+    background-size: cover;
     opacity: 0.1;
     z-index: 1;
   }
@@ -122,68 +123,18 @@
 }
 
 .featured-tables {
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
+
+  .p-carousel-content {
+    padding-bottom: 1rem;
   }
 
-  .tables-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-    max-height: calc(2 * 350px + 1.5rem); // 2 linhas x altura do card + espaçamento
-    overflow-y: auto; // para scroll se passar de 2 linhas
+  ::-webkit-scrollbar {
+    height: 6px;
   }
 
-  .table-card {
-    // background: #1e1e2f;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 0 8px rgb(0 0 0 / 0.3);
-    display: flex;
-    flex-direction: column;
-
-    .table-image img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-    }
-
-    .table-content {
-      padding: 1rem;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-
-      .table-title {
-        margin: 0 0 0.5rem 0;
-        font-weight: 700;
-        font-size: 1.25rem;
-        color: #f0f0f0;
-      }
-
-      .table-description {
-        flex-grow: 1;
-        font-size: 0.9rem;
-        color: #ccc;
-        margin-bottom: 1rem;
-      }
-
-      .table-info,
-      .table-meta {
-        font-size: 0.8rem;
-        color: #999;
-        margin-bottom: 0.5rem;
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-      }
-
-      button {
-        align-self: flex-start;
-      }
-    }
+  ::-webkit-scrollbar-thumb {
+    background: #999;
+    border-radius: 5px;
   }
 }
 

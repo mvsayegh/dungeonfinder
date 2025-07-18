@@ -10,9 +10,21 @@
         </p>
 
         <div class="hero-actions">
-          <app-button label="Buscar Mesas" icon="pi pi-heart-fill" iconPosition="left" severity="primary">
+          <app-button
+            label="Buscar Mesas"
+            [outlined]="true"
+            icon="pi pi-heart-fill"
+            iconPosition="left"
+            severity="primary"
+          >
           </app-button>
-          <app-button label="Sou Mestre" icon="pi pi-shield" iconPosition="left" severity="secondary" >
+          <app-button
+            label="Buscar Mestres"
+            [outlined]="true"
+            icon="pi pi-shield"
+            iconPosition="left"
+            severity="warn"
+          >
           </app-button>
         </div>
       </div>
@@ -26,97 +38,78 @@
       </div>
     </div>
   </section>
+
   <!-- Mesas em Destaque -->
-  <section class="featured-tables">
-  <div class="container">
-    <h2 class="section-title">Mesas em Destaque</h2>
-    <p class="section-subtitle">
-      Conheça algumas das nossas mesas mais populares e bem avaliadas.
-    </p>
+  <section class="featured-tables py-6">
+    <div class="container mx-auto px-4">
+      <h2 class="text-2xl font-bold mb-2">Mesas em Destaque</h2>
+      <p class="text-gray-400 mb-4">
+        Conheça algumas das nossas mesas mais populares e bem avaliadas.
+      </p>
 
-    <app-spinner *ngIf="loading()" />
-    <div class="tables-grid" *ngIf="!loading()" style="position: relative;">
-      <div class="table-card" *ngFor="let table of featuredTables">
-        <div class="table-image">
-          <img
-            [src]="table.image || '/assets/images/default-table.png'"
-            [alt]="table.title"
-            loading="lazy"
-          />
-        </div>
+      <app-spinner *ngIf="loading()" />
 
-        <div class="table-content">
-          <h3 class="table-title">{{ table.title }}</h3>
-          <p class="table-description">{{ table.description }}</p>
+      <div *ngIf="!loading() && featuredTables.length > 0" >
+        <!-- Carrossel -->
+        <p-carousel
+          [value]="featuredTables"
+          [numVisible]="3"
+          [numScroll]="2"
+          [circular]="true"
+          [showNavigators]="true"
+          [autoplayInterval]="4000"
+          [responsiveOptions]="responsiveOptions"
+        >
+          <ng-template let-table pTemplate="item">
+  <div
+    class="min-h-[360px] flex flex-col justify-between border dark:border-surface-700 rounded shadow-md m-2 p-3 bg-white dark:bg-gray-800"
+  >
+              <div>
+                <div class="relative mx-auto">
+                  <img
+                    [src]="table.image || '/assets/images/default-table.png'"
+                    [alt]="table.title"
+                    class="w-full h-40 object-cover rounded"
+                  />
+                  <p-tag
+                    [value]="table.status"
+                    class="absolute top-2 left-2 dark:!bg-surface-900"
+                  />
+                </div>
 
-          <div class="table-info">
-            <span><strong>Mestre:</strong> {{ table.createdBy.name }}</span>
-            <span>
-              <strong>Jogadores:</strong> {{ table.players.length }} /
-              {{ table.maxPlayers }}
-            </span>
-          </div>
+                <div
+                  class="mt-2 font-bold text-lg text-gray-800 dark:text-gray-100"
+                >
+                  {{ table.title }}
+                </div>
 
-          <div class="table-meta">
-            <span><strong>Sistema:</strong> {{ table.system.replace('_', '.') }}</span>
-            <span><strong>Status:</strong> {{ table.status }}</span>
-            <span><strong>Data:</strong> {{ table.time | date: 'short' }}</span>
-            <span><strong>Duração:</strong> {{ table.duration | lowercase }}</span>
-          </div>
+                <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                 <p-tag>{{ table.system.replace('_', ' ') }}</p-tag>
+                </div>
 
-          <!-- <button (click)="onViewTable(table)" class="btn btn-primary btn-sm">
-            Ver Detalhes
-          </button> -->
-        </div>
+              </div>
+              <hr>
+              <div class="text-xs text-gray-400 mt-2">
+                <p>
+                  Mestre:
+                  <span class="font-semibold">{{ table.createdBy?.name }}</span>
+                </p>
+                <p>
+                  Jogadores: {{ table.players?.length }}/{{ table.maxPlayers }}
+                </p>
+                <p>Data: {{ table.time | date: 'shortDate' || 'A combinar' }}</p>
+                <p>Duração: {{ table.duration || 'Variável' }}</p>
+                <p>Nível: {{ table.level || 'Qualquer' }}</p>
+              </div>
+            </div>
+          </ng-template>
+        </p-carousel>
       </div>
     </div>
-
-    <p-paginator
-      *ngIf="!loading()"
-      [rows]="pagination.pageSize"
-      [totalRecords]="pagination.totalGameTables"
-      [rowsPerPageOptions]="[5, 10, 20]"
-      (onPageChange)="paginate($event)"
-      [styleClass]="'p-mt-4'"
-    ></p-paginator>
-  </div>
-</section>
-
-  <!-- Mestres em Destaque -->
-  <!-- <section class="featured-masters">
-    <div class="container">
-      <h2 class="section-title">Mestres em Destaque</h2>
-      <p class="section-subtitle">Conheça alguns dos nossos mestres mais bem avaliados</p>
-
-      <div class="masters-grid">
-        <div class="master-card" *ngFor="let master of featuredMasters">
-          <div class="master-avatar">
-            <img [src]="master.avatar" [alt]="master.name" onerror="this.src='/assets/images/default-avatar.png'">
-            <div class="rating">
-              <span class="stars">⭐</span>
-              <span class="rating-value">{{ master.rating }}</span>
-            </div>
-          </div>
-
-          <div class="master-info">
-            <h3 class="master-name">{{ master.name }}</h3>
-            <p class="master-experience">{{ master.experience }} de experiência</p>
-
-            <div class="specialties">
-              <span class="specialty-tag" *ngFor="let specialty of master.specialties">
-                {{ specialty }}
-              </span>
-            </div>
-
-            <button class="btn btn-outline btn-small">Ver Perfil</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section> -->
+  </section>
 
   <!-- Estatísticas -->
-  <!-- <section class="stats-section">
+  <section class="stats-section">
     <div class="container">
       <div class="stats-grid">
         <div class="stat-item">
@@ -137,7 +130,7 @@
         </div>
       </div>
     </div>
-  </section> -->
+  </section>
 
   <!-- Como Funciona -->
   <!-- <section class="how-it-works">

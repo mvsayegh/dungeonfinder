@@ -5,7 +5,11 @@ import { SpinnerService } from '@core/services';
 import { ApiService } from '@core/services/api.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'primeng/api';
+import { CardModule } from 'primeng/card';
 import { PaginatorModule } from 'primeng/paginator';
+import { TagModule } from 'primeng/tag';
+import { AvatarModule } from 'primeng/avatar';
+import { CarouselModule } from 'primeng/carousel';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +21,10 @@ import { PaginatorModule } from 'primeng/paginator';
     PaginatorModule,
     ButtonComponent,
     SpinnerComponent,
+    CardModule,
+    TagModule,
+    AvatarModule,
+    CarouselModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -26,13 +34,33 @@ export class HomeComponent {
   private _api = inject(ApiService);
   private _spinner = inject(SpinnerService);
 
-  loading = this._spinner.isLoading; // signal<boolean>
+  loading = this._spinner.isLoading;
   featuredTables: any[] = [];
+  showMore = false;
+
   pagination = {
     pageNumber: 1,
     pageSize: 10,
     totalGameTables: 0,
   };
+
+  responsiveOptions = [
+    {
+      breakpoint: '1400px',
+      numVisible: 2,
+      numScroll: 1,
+    },
+    {
+      breakpoint: '1199px',
+      numVisible: 2,
+      numScroll: 1,
+    },
+    {
+      breakpoint: '767px',
+      numVisible: 1,
+      numScroll: 1,
+    },
+  ];
 
   constructor() {
     this.searchTables(this.pagination.pageNumber, this.pagination.pageSize);
@@ -45,22 +73,23 @@ export class HomeComponent {
         this.featuredTables = response.body.data.gameTables;
         this.pagination = response.body.data.pagination;
       },
-      error: (err) => {
-        console.error('Erro ao buscar mesas', err);
-      },
-      complete: () => {
-        this._spinner.hide();
-      },
+      error: (err) => console.error('Erro ao buscar mesas', err),
+      complete: () => this._spinner.hide(),
     });
   }
 
   paginate(event: any) {
-    this.pagination.pageNumber = event.page + 1; // page começa em 0 no paginator
+    this.pagination.pageNumber = event.page + 1;
     this.pagination.pageSize = event.rows;
     this.searchTables(this.pagination.pageNumber, this.pagination.pageSize);
   }
 
+  toggleShowMore() {
+    this.showMore = !this.showMore;
+  }
+
   onViewTable(table: any) {
-    console.log('Ver detalhes da mesa:', table);
+    // Logic to view the table details can be implemented here
+    console.log('Viewing table:', table);
   }
 }
