@@ -5,19 +5,16 @@
       <div class="hero-content">
         <h1 class="hero-title">Encontre sua próxima aventura de RPG!</h1>
         <p class="hero-subtitle">
-          Conecte-se com mestres experientes e jogadores apaixonados.
-          Descubra mesas abertas, crie campanhas épicas e viva aventuras inesquecíveis.
+          Conecte-se com mestres experientes e jogadores apaixonados. Descubra
+          mesas abertas, crie campanhas épicas e viva aventuras inesquecíveis.
         </p>
 
         <div class="hero-actions">
-          <button class="btn btn-primary btn-large" (click)="onSearchTables()">
-            🎲 Buscar Mesas
-          </button>
-          <button class="btn btn-accent btn-large" (click)="onBecomeMaster()">
-            ⚔️ Sou Mestre
-          </button>
+          <app-button label="Buscar Mesas" icon="pi pi-heart-fill" iconPosition="left" severity="primary">
+          </app-button>
+          <app-button label="Sou Mestre" icon="pi pi-shield" iconPosition="left" severity="secondary" >
+          </app-button>
         </div>
-
       </div>
 
       <div class="hero-image">
@@ -29,9 +26,64 @@
       </div>
     </div>
   </section>
+  <!-- Mesas em Destaque -->
+  <section class="featured-tables">
+  <div class="container">
+    <h2 class="section-title">Mesas em Destaque</h2>
+    <p class="section-subtitle">
+      Conheça algumas das nossas mesas mais populares e bem avaliadas.
+    </p>
+
+    <app-spinner *ngIf="loading()" />
+    <div class="tables-grid" *ngIf="!loading()" style="position: relative;">
+      <div class="table-card" *ngFor="let table of featuredTables">
+        <div class="table-image">
+          <img
+            [src]="table.image || '/assets/images/default-table.png'"
+            [alt]="table.title"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="table-content">
+          <h3 class="table-title">{{ table.title }}</h3>
+          <p class="table-description">{{ table.description }}</p>
+
+          <div class="table-info">
+            <span><strong>Mestre:</strong> {{ table.createdBy.name }}</span>
+            <span>
+              <strong>Jogadores:</strong> {{ table.players.length }} /
+              {{ table.maxPlayers }}
+            </span>
+          </div>
+
+          <div class="table-meta">
+            <span><strong>Sistema:</strong> {{ table.system.replace('_', '.') }}</span>
+            <span><strong>Status:</strong> {{ table.status }}</span>
+            <span><strong>Data:</strong> {{ table.time | date: 'short' }}</span>
+            <span><strong>Duração:</strong> {{ table.duration | lowercase }}</span>
+          </div>
+
+          <!-- <button (click)="onViewTable(table)" class="btn btn-primary btn-sm">
+            Ver Detalhes
+          </button> -->
+        </div>
+      </div>
+    </div>
+
+    <p-paginator
+      *ngIf="!loading()"
+      [rows]="pagination.pageSize"
+      [totalRecords]="pagination.totalGameTables"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      (onPageChange)="paginate($event)"
+      [styleClass]="'p-mt-4'"
+    ></p-paginator>
+  </div>
+</section>
 
   <!-- Mestres em Destaque -->
-  <section class="featured-masters">
+  <!-- <section class="featured-masters">
     <div class="container">
       <h2 class="section-title">Mestres em Destaque</h2>
       <p class="section-subtitle">Conheça alguns dos nossos mestres mais bem avaliados</p>
@@ -61,10 +113,10 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- Estatísticas -->
-  <section class="stats-section">
+  <!-- <section class="stats-section">
     <div class="container">
       <div class="stats-grid">
         <div class="stat-item">
@@ -85,10 +137,10 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- Como Funciona -->
-  <section class="how-it-works">
+  <!-- <section class="how-it-works">
     <div class="container">
       <h2 class="section-title">Como Funciona</h2>
 
@@ -118,20 +170,16 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- Call to Action -->
-  <section class="cta-section">
+  <!-- <section class="cta-section">
     <div class="container">
       <div class="cta-content">
         <h2>Pronto para começar sua aventura?</h2>
-        <!-- <p>Junte-se a milhares de jogadores e mestres em nossa comunidade</p>
-        <button class="btn btn-accent btn-large" (click)="onRegister()">
-          Criar Conta Grátis
-        </button> -->
+        <p>Junte-se a milhares de jogadores e mestres em nossa comunidade</p>
         <app-button label="Criar Conta Grátis" (click)="onRegister()"></app-button>
       </div>
     </div>
-  </section>
+  </section> -->
 </div>
-

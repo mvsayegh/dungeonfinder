@@ -3,6 +3,7 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import {
+  apiBaseUrlInterceptor,
   errorResponseInterceptor,
   spinnerInterceptor,
 } from '@core/interceptors';
@@ -21,7 +22,11 @@ export const appConfig: ApplicationConfig = {
     provideMessage(),
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(
-      withInterceptors([errorResponseInterceptor, spinnerInterceptor]),
+      withInterceptors([
+        apiBaseUrlInterceptor,
+        errorResponseInterceptor,
+        spinnerInterceptor,
+      ]),
     ),
     provideTranslateService(translateConfig),
     providePrimeNG({

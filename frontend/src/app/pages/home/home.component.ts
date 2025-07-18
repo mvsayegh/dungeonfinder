@@ -1,57 +1,66 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ButtonComponent } from '@components/shared';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ButtonComponent, SpinnerComponent } from '@components/shared';
+import { SpinnerService } from '@core/services';
+import { ApiService } from '@core/services/api.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from 'primeng/api';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, TranslateModule, ButtonComponent],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    SharedModule,
+    PaginatorModule,
+    ButtonComponent,
+    SpinnerComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
-  featuredMasters = [
-    {
-      id: 1,
-      name: 'João Silva',
-      avatar: '/assets/images/master1.jpg',
-      rating: 4.8,
-      specialties: ['D&D 5e', 'Pathfinder'],
-      experience: '5 anos',
-    },
-    {
-      id: 2,
-      name: 'Maria Santos',
-      avatar: '/assets/images/master2.jpg',
-      rating: 4.9,
-      specialties: ['Call of Cthulhu', 'Vampire'],
-      experience: '8 anos',
-    },
-    {
-      id: 3,
-      name: 'Pedro Costa',
-      avatar: '/assets/images/master3.jpg',
-      rating: 4.7,
-      specialties: ['Tormenta', 'D&D 3.5'],
-      experience: '3 anos',
-    },
-  ];
+  private _api = inject(ApiService);
+  private _spinner = inject(SpinnerService);
 
-  onSearchTables() {
-    // Navegar para página de busca
+  loading = this._spinner.isLoading; // signal<boolean>
+  featuredTables: any[] = [];
+  pagination = {
+    pageNumber: 1,
+    pageSize: 10,
+    totalGameTables: 0,
+  };
+
+  constructor() {
+    this.searchTables(this.pagination.pageNumber, this.pagination.pageSize);
   }
 
-  onBecomeMaster() {
-    // Navegar para página de criação de mesa
+  searchTables(page: number, size: number) {
+    this._spinner.show();
+    this._api.get(`game-tables?page=${page}&limit=${size}`).subscribe({
+      next: (response: any) => {
+        this.featuredTables = response.body.data.gameTables;
+        this.pagination = response.body.data.pagination;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar mesas', err);
+      },
+      complete: () => {
+        this._spinner.hide();
+      },
+    });
   }
 
-  onLogin() {
-    // Navegar para página de login
+  paginate(event: any) {
+    this.pagination.pageNumber = event.page + 1; // page começa em 0 no paginator
+    this.pagination.pageSize = event.rows;
+    this.searchTables(this.pagination.pageNumber, this.pagination.pageSize);
   }
 
-  onRegister() {
-    // Navegar para página de registro
+  onViewTable(table: any) {
+    console.log('Ver detalhes da mesa:', table);
   }
 }
