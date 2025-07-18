@@ -1,0 +1,16 @@
+//Mesas em Destaque
+.featured-tables {
+
+  .p-carousel-content {
+    padding-bottom: 1rem;
+  }
+
+  ::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #999;
+    border-radius: 5px;
+  }
+}
