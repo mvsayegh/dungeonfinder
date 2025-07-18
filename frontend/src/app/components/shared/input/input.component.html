@@ -1,0 +1,58 @@
+<p-floatLabel [variant]="labelPosition()">
+  @switch (type()) {
+    @case ('text') {
+      <input
+        pInputText
+        id="customInput"
+        [type]="type()"
+        [pKeyFilter]="keyFilter()"
+        [placeholder]="label() ? '' : placeholder()"
+        [disabled]="disabled"
+        [variant]="variant()"
+        [value]="value"
+        (input)="onInput($event)"
+        (blur)="onBlur()"
+      />
+    }
+
+    @case ('number') {
+      <p-inputNumber
+        id="customInput"
+        [disabled]="disabled"
+        [variant]="variant()"
+        [pKeyFilter]="keyFilter()"
+        [placeholder]="label() ? '' : placeholder()"
+        (onInput)="onInput($event)"
+        (onBlur)="onBlur()"
+      />
+    }
+
+    @case ('password') {
+      <p-password
+        id="customInput"
+        [disabled]="disabled"
+        [variant]="variant()"
+        [placeholder]="label() ? '' : placeholder()"
+        (input)="onInput($event)"
+        (blur)="onBlur()"
+      />
+    }
+    @default {
+      @if (mask() !== '') {
+        <p-inputMask
+          id="customInput"
+          [mask]="mask()"
+          [disabled]="disabled"
+          [variant]="variant()"
+          [pKeyFilter]="keyFilter()"
+          [placeholder]="label() ? '' : placeholder()"
+          (onInput)="onInput($event)"
+          (onBlur)="onBlur()"
+        />
+      }
+    }
+  }
+  @if (label()) {
+    <label for="customInput">{{ label() }}</label>
+  }
+</p-floatLabel>

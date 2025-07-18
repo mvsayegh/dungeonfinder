@@ -1,0 +1,56 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <!-- Links Úteis -->
+      <div class="footer-section">
+        <h3>Links Úteis</h3>
+        <ul>
+          <li><a routerLink="/about">Sobre</a></li>
+          <li><a routerLink="/help">Ajuda</a></li>
+          <li><a routerLink="/terms">Termos de Uso</a></li>
+          <li><a routerLink="/privacy">Política de Privacidade</a></li>
+        </ul>
+      </div>
+
+      <!-- Comunidade -->
+      <div class="footer-section">
+        <h3>Comunidade</h3>
+        <ul>
+          <li><a href="#" target="_blank">Discord</a></li>
+          <li><a href="#" target="_blank">Reddit</a></li>
+          <li><a href="#" target="_blank">Facebook</a></li>
+          <li><a href="#" target="_blank">Twitter</a></li>
+        </ul>
+      </div>
+
+      <!-- Sistemas de RPG -->
+      <div class="footer-section">
+        <h3>Sistemas Populares</h3>
+        <ul>
+          <li><a routerLink="/tables" [queryParams]="{system: 'dnd'}">D&D 5e</a></li>
+          <li><a routerLink="/tables" [queryParams]="{system: 'pathfinder'}">Pathfinder</a></li>
+          <li><a routerLink="/tables" [queryParams]="{system: 'cthulhu'}">Call of Cthulhu</a></li>
+          <li><a routerLink="/tables" [queryParams]="{system: 'vampire'}">Vampire</a></li>
+        </ul>
+      </div>
+
+      <!-- Informações -->
+      <div class="footer-section">
+        <h3>RPG Table Finder</h3>
+        <p>Conectando jogadores e mestres para aventuras épicas!</p>
+        <div class="social-links">
+          <a href="#" class="social-link" title="Discord">🎮</a>
+          <a href="#" class="social-link" title="GitHub">💻</a>
+          <a href="#" class="social-link" title="Email">📧</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+      <p>&copy; {{ currentYear }} RPG Table Finder. Todos os direitos reservados.</p>
+      <p>Feito com ❤️ para a comunidade RPG</p>
+    </div>
+  </div>
+</footer>
+

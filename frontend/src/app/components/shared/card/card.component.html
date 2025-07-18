@@ -1,0 +1,28 @@
+<p-card [style]="{ width: width(), overflow: 'hidden' }">
+  <ng-template #header>
+    <app-image
+      class="w-full"
+      [imageSrc]="headerSrc()"
+      [width]="headerWidth()"
+      [height]="headerHeight()"
+    />
+  </ng-template>
+  <ng-template #title> {{ titleLabel() }} </ng-template>
+  <ng-template #subtitle> {{ subtitleLabel() }} </ng-template>
+  <p>{{ description() }}</p>
+  <ng-template #footer>
+    @if (actions()) {
+      <div class="flex gap-4 mt-1">
+        @for (action of actions(); track action.label) {
+          <app-button
+            [label]="action.label"
+            [severity]="action.severity"
+            class="w-full"
+            styleClass="w-full"
+            (onClick)="action.onClick()"
+          />
+        }
+      </div>
+    }
+  </ng-template>
+</p-card>

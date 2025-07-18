@@ -1,0 +1,33 @@
+{
+  "nav": {
+    "home": "Início",
+    "tables": "Mesas",
+    "login": "Entrar"
+  },
+  "home": {
+    "title": "Encontre sua próxima aventura de RPG!",
+    "subtitle": "Busque mesas de RPG disponíveis, junte-se a campanhas e explore mundos fantásticos.",
+    "search_placeholder": "Ex: D&D, Vampiro, Call of Cthulhu...",
+    "search": "Buscar",
+    "featured_tables": "Mesas Populares",
+    "table_example": "Uma mesa desafiadora para aventureiros de nível 5.",
+    "view_details": "Ver detalhes"
+  },
+  "footer": {
+    "terms": "Termos",
+    "privacy": "Privacidade",
+    "contact": "Contato"
+  },
+  "notFound": {
+    "title": "404 Página Não Encontrada",
+    "description": "A página que você solicitou não foi encontrada.",
+    "back": "Voltar para a Página Inicial"
+  },
+  "table": {
+    "empty": "Nenhum registro encontrado",
+    "search": "Pesquisar"
+  },
+  "select": {
+    "placeholder": "Selecione uma opção"
+  }
+}

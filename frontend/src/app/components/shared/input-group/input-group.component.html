@@ -1,0 +1,53 @@
+<p-inputgroup>
+  <ng-container *ngIf="addonPosition() === 'before'; else afterAddon">
+    <app-input-group-addon
+      [type]="addonType()"
+      [icon]="addonIcon()"
+      [disabled]="disabled()"
+      [buttonDisabled]="disabled()"
+      [buttonIcon]="addonIcon()"
+      [buttonLabel]="addonLabel()"
+      [buttonLoading]="loading()"
+      [buttonSeverity]="severity()"
+      [buttonIconPosition]="addonIconPosition()"
+      (buttonClick)="handleAddonButtonClick()"
+    />
+    <app-input
+      [label]="label()"
+      [placeholder]="placeholder()"
+      [labelPosition]="labelPosition()"
+      [type]="type()"
+      [mask]="mask()"
+      [keyFilter]="keyFilter()"
+      [required]="required()"
+      [disabled]="disabled()"
+      [variant]="variant()"
+    />
+  </ng-container>
+
+  <ng-template #afterAddon>
+    <app-input
+      [label]="label()"
+      [placeholder]="placeholder()"
+      [labelPosition]="labelPosition()"
+      [type]="type()"
+      [mask]="mask()"
+      [keyFilter]="keyFilter()"
+      [required]="required()"
+      [disabled]="disabled()"
+      [variant]="variant()"
+    />
+    <app-input-group-addon
+      [type]="addonType()"
+      [icon]="addonIcon()"
+      [disabled]="disabled()"
+      [buttonDisabled]="disabled()"
+      [buttonIcon]="addonIcon()"
+      [buttonLabel]="addonLabel()"
+      [buttonLoading]="loading()"
+      [buttonSeverity]="severity()"
+      [buttonIconPosition]="addonIconPosition()"
+      (buttonClick)="handleAddonButtonClick()"
+    />
+  </ng-template>
+</p-inputgroup>

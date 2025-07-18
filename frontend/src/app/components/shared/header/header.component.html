@@ -1,0 +1,35 @@
+<header class="header">
+  <div class="container">
+    <div class="header-content">
+      <!-- Logo e Nome -->
+      <div class="logo-section">
+        <h1 class="logo">
+          <a routerLink="/">RPG Table Finder</a>
+        </h1>
+      </div>
+
+      <!-- Menu de Navegação -->
+      <nav class="nav-menu">
+        <ul class="nav-list">
+          <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Início</a></li>
+          <li><a routerLink="/tables" routerLinkActive="active">Buscar Mesas</a></li>
+          <li><a routerLink="/create-table" routerLinkActive="active">Criar Mesa</a></li>
+        </ul>
+      </nav>
+
+      <!-- Seção de Usuário -->
+      <div class="user-section">
+        <div *ngIf="!isLoggedIn" class="auth-buttons">
+          <button class="btn btn-outline" (click)="onLogin()">Login</button>
+          <button class="btn btn-primary" routerLink="/register">Cadastro</button>
+        </div>
+
+        <div *ngIf="isLoggedIn" class="user-menu">
+          <span class="user-name">Olá, {{ userName }}</span>
+          <button class="btn btn-outline" (click)="onLogout()">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+

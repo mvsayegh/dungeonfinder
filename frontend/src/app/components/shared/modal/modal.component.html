@@ -1,0 +1,6 @@
+<div class="flex flex-column align-items-center justify-items-center">
+  <p>{{ data?.description }}</p>
+  @if (data?.btnConfirm) {
+    <p-button [label]="data?.btnConfirm" icon="pi pi-times" (click)="close()" />
+  }
+</div>

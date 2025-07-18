@@ -1,0 +1,11 @@
+<p-image
+  [src]="imageSrc() || ''"
+  [width]="width()"
+  [height]="height()"
+  [altText]="imageAlt()"
+  [preview]="preview()"
+>
+  <ng-template #indicator>
+    <i [class]="previewIndicatorIcon()"></i>
+  </ng-template>
+</p-image>

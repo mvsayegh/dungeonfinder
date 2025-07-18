@@ -1,0 +1,137 @@
+<div class="home-page">
+  <!-- Banner Principal -->
+  <section class="hero-banner">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Encontre sua próxima aventura de RPG!</h1>
+        <p class="hero-subtitle">
+          Conecte-se com mestres experientes e jogadores apaixonados.
+          Descubra mesas abertas, crie campanhas épicas e viva aventuras inesquecíveis.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-large" (click)="onSearchTables()">
+            🎲 Buscar Mesas
+          </button>
+          <button class="btn btn-accent btn-large" (click)="onBecomeMaster()">
+            ⚔️ Sou Mestre
+          </button>
+        </div>
+
+      </div>
+
+      <div class="hero-image">
+        <div class="dice-animation">
+          <div class="dice">🎲</div>
+          <div class="dice">🎲</div>
+          <div class="dice">🎲</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mestres em Destaque -->
+  <section class="featured-masters">
+    <div class="container">
+      <h2 class="section-title">Mestres em Destaque</h2>
+      <p class="section-subtitle">Conheça alguns dos nossos mestres mais bem avaliados</p>
+
+      <div class="masters-grid">
+        <div class="master-card" *ngFor="let master of featuredMasters">
+          <div class="master-avatar">
+            <img [src]="master.avatar" [alt]="master.name" onerror="this.src='/assets/images/default-avatar.png'">
+            <div class="rating">
+              <span class="stars">⭐</span>
+              <span class="rating-value">{{ master.rating }}</span>
+            </div>
+          </div>
+
+          <div class="master-info">
+            <h3 class="master-name">{{ master.name }}</h3>
+            <p class="master-experience">{{ master.experience }} de experiência</p>
+
+            <div class="specialties">
+              <span class="specialty-tag" *ngFor="let specialty of master.specialties">
+                {{ specialty }}
+              </span>
+            </div>
+
+            <button class="btn btn-outline btn-small">Ver Perfil</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Estatísticas -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-number">500+</div>
+          <div class="stat-label">Mesas Ativas</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">1.2k+</div>
+          <div class="stat-label">Jogadores</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">200+</div>
+          <div class="stat-label">Mestres</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">50+</div>
+          <div class="stat-label">Sistemas</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Como Funciona -->
+  <section class="how-it-works">
+    <div class="container">
+      <h2 class="section-title">Como Funciona</h2>
+
+      <div class="steps-grid">
+        <div class="step-item">
+          <div class="step-icon">🔍</div>
+          <h3>1. Busque</h3>
+          <p>Encontre mesas que combinam com seu estilo e disponibilidade</p>
+        </div>
+
+        <div class="step-item">
+          <div class="step-icon">🤝</div>
+          <h3>2. Conecte</h3>
+          <p>Entre em contato com o mestre e solicite participação</p>
+        </div>
+
+        <div class="step-item">
+          <div class="step-icon">🎭</div>
+          <h3>3. Jogue</h3>
+          <p>Participe de sessões épicas e viva aventuras inesquecíveis</p>
+        </div>
+
+        <div class="step-item">
+          <div class="step-icon">⭐</div>
+          <h3>4. Avalie</h3>
+          <p>Compartilhe sua experiência e ajude a comunidade</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Pronto para começar sua aventura?</h2>
+        <!-- <p>Junte-se a milhares de jogadores e mestres em nossa comunidade</p>
+        <button class="btn btn-accent btn-large" (click)="onRegister()">
+          Criar Conta Grátis
+        </button> -->
+        <app-button label="Criar Conta Grátis" (click)="onRegister()"></app-button>
+      </div>
+    </div>
+  </section>
+</div>
+

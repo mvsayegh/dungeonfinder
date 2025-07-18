@@ -1,0 +1,59 @@
+<div class="custom-table-wrapper">
+  <!-- Filter -->
+  @if (showFilter()) {
+    <div class="global-filter">
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <app-input
+          type="text"
+          [placeholder]="'table.search' | translate"
+          (input)="onGlobalFilter($event)"
+        />
+      </span>
+    </div>
+  }
+
+  <!-- Table -->
+  <p-table
+    [value]="data()"
+    [columns]="columns()"
+    [loading]="loading()"
+    [paginator]="paginator()"
+    [rows]="rows()"
+    [rowsPerPageOptions]="rowsPerPageOptions()"
+    [filterDelay]="500"
+    [styleClass]="'custom-table'"
+  >
+    <!-- Table Headers -->
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        @for (col of columns; track col.field) {
+          <th [pSortableColumn]="col.field">
+            {{ col.header }}
+            <p-sortIcon *ngIf="col.sortable" [field]="col.field" />
+          </th>
+        }
+      </tr>
+    </ng-template>
+
+    <!-- Table Rows -->
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        @for (col of columns; track col.field) {
+          <td>
+            {{ rowData[col.field] }}
+          </td>
+        }
+      </tr>
+    </ng-template>
+
+    <!-- Empty State -->
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td [attr.colspan]="columns().length" class="empty-state">
+          {{ 'table.empty' | translate }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

@@ -1,0 +1,15 @@
+<p-inputgroup-addon>
+  @if (type() === 'icon') {
+    <span [class]="icon()"></span>
+  } @else {
+    <app-button
+      [label]="buttonLabel()"
+      [icon]="buttonIcon()"
+      [iconPosition]="buttonIconPosition()"
+      [loading]="buttonLoading()"
+      [disabled]="buttonDisabled()"
+      [severity]="buttonSeverity()"
+      (onClick)="handleButtonClick()"
+    />
+  }
+</p-inputgroup-addon>

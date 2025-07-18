@@ -1,0 +1,20 @@
+<p-floatLabel [variant]="labelPosition()">
+  <p-select
+    id="customSelect"
+    [options]="options()"
+    [placeholder]="placeholder() | translate"
+    [checkmark]="showCheck()"
+    [showClear]="showClear()"
+    [editable]="editable()"
+    [filter]="filter()"
+    [filterBy]="filterBy()"
+    [loading]="loading()"
+    [virtualScroll]="virtualScroll()"
+    [variant]="variant()"
+    [disabled]="disabled"
+    [(ngModel)]="selectedOption"
+    (onChange)="onValueChange($event)"
+    optionLabel="label"
+  />
+  <label for="customSelect">{{ label() }}></label>
+</p-floatLabel>
