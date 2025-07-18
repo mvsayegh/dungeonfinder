@@ -4,7 +4,7 @@
       <!-- Logo e Nome -->
       <div class="logo-section">
         <h1 class="logo">
-          <a routerLink="/">RPG Table Finder</a>
+          <a routerLink="/">Dungeon Finder</a>
         </h1>
       </div>
 
@@ -13,15 +13,15 @@
         <ul class="nav-list">
           <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Início</a></li>
           <li><a routerLink="/tables" routerLinkActive="active">Buscar Mesas</a></li>
-          <li><a routerLink="/create-table" routerLinkActive="active">Criar Mesa</a></li>
+          <li><a routerLink="/gamemasters" routerLinkActive="active">Buscar Mestres</a></li>
         </ul>
       </nav>
 
       <!-- Seção de Usuário -->
       <div class="user-section">
         <div *ngIf="!isLoggedIn" class="auth-buttons">
-          <button class="btn btn-outline" (click)="onLogin()">Login</button>
-          <button class="btn btn-primary" routerLink="/register">Cadastro</button>
+          <app-button label="Entrar" [outlined]="true" (click)="onLogin()"></app-button>
+          <app-button label="Cadastra-se"></app-button>
         </div>
 
         <div *ngIf="isLoggedIn" class="user-menu">
