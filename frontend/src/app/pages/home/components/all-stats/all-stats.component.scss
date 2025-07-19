@@ -1,10 +1,47 @@
 // Estatísticas
+
 .stats-section {
+  position: relative;
+  overflow: hidden;
   background: var(--primary-color);
   color: white;
   padding: 3rem 0;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+
+  // Fundo animado místico
+  &::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.15), transparent 70%);
+    animation: rotateBackground 60s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .magic-particles {
+    pointer-events: none;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
+    overflow: visible;
+
+    .magic-particle {
+      position: absolute;
+      background: radial-gradient(circle, #aaffff, transparent 70%);
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: floatParticle linear infinite;
+    }
+  }
 
   .stats-grid {
+    position: relative;
+    z-index: 2; // Sobre a animação de fundo
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 2rem;
@@ -17,11 +54,64 @@
       font-weight: bold;
       color: var(--accent-color);
       margin-bottom: 0.5rem;
+      min-height: 3.5rem; // para evitar "pulo" no layout com a seta
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .stat-label {
       font-size: 1.1rem;
       opacity: 0.9;
     }
+  }
+}
+
+// Animação da seta de level-up
+.level-up-arrow {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 14px solid var(--accent-color, #4CAF50);
+  animation: bounceUp 1.2s infinite ease-in-out;
+  margin: 0 auto;
+  transform-origin: center bottom;
+}
+
+@keyframes bounceUp {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-12px) scale(1.1);
+    opacity: 0.7;
+  }
+}
+
+// Animações do fundo
+@keyframes rotateBackground {
+  0% {
+    transform: rotate(0deg) translate(0, 0);
+  }
+  100% {
+    transform: rotate(360deg) translate(0, 0);
+  }
+}
+
+@keyframes floatParticle {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-15px) scale(1.2);
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.8;
   }
 }

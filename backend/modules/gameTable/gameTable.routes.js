@@ -5,6 +5,9 @@ import isAdminMiddleware from "../../middlewares/isAdminMiddleware.js";
 
 const router = express.Router();
 
+// Estatísticas de Game Tables
+router.get("/stats", gameTableController.getStats);
+
 // Criar nova Game Table
 router.post("/", authMiddleware, gameTableController.createGameTable);
 
@@ -12,7 +15,12 @@ router.post("/", authMiddleware, gameTableController.createGameTable);
 router.put("/:id", authMiddleware, gameTableController.updateGameTable);
 
 // Deletar uma Game Table (Admin only)
-router.delete("/:id", authMiddleware, isAdminMiddleware, gameTableController.deleteGameTable);
+router.delete(
+  "/:id",
+  authMiddleware,
+  isAdminMiddleware,
+  gameTableController.deleteGameTable
+);
 
 // Lista de Game Tables
 router.get("/", gameTableController.listAvailableGameTables);

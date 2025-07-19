@@ -1,16 +1,34 @@
 import * as gameTableService from "./gameTable.service.js";
 import { successResponse, errorResponse } from "../../utils/responseHelper.js";
 import asyncHandler from "../../middlewares/asyncHandler.js";
+import GameTable from "./gameTable.model.js";
+import User from "../user/user.model.js";
 
 export const createGameTable = asyncHandler(async (req, res) => {
-  const newGameTable = await gameTableService.createGameTable(req.user.id, req.body);
-  successResponse(res, { newGameTable }, "Game Table created successfully", 201);
+  const newGameTable = await gameTableService.createGameTable(
+    req.user.id,
+    req.body
+  );
+  successResponse(
+    res,
+    { newGameTable },
+    "Game Table created successfully",
+    201
+  );
 });
 
 export const updateGameTable = asyncHandler(async (req, res) => {
   const { gameTableId } = req.params;
-  const updatedTable = await gameTableService.updateGameTable(gameTableId, req.body, req.user.id);
-  successResponse(res, { gameTable: updatedTable }, "Game Table updated successfully");
+  const updatedTable = await gameTableService.updateGameTable(
+    gameTableId,
+    req.body,
+    req.user.id
+  );
+  successResponse(
+    res,
+    { gameTable: updatedTable },
+    "Game Table updated successfully"
+  );
 });
 
 export const deleteGameTable = asyncHandler(async (req, res) => {
@@ -25,7 +43,11 @@ export const listAvailableGameTables = asyncHandler(async (req, res) => {
   const parsedLimit = Math.max(1, parseInt(limit, 10));
 
   const filters = { status, system, title, duration };
-  const result = await gameTableService.listAvailableGameTables(parsedPage, parsedLimit, filters);
+  const result = await gameTableService.listAvailableGameTables(
+    parsedPage,
+    parsedLimit,
+    filters
+  );
 
   successResponse(res, {
     gameTables: result.gameTables,
@@ -47,20 +69,34 @@ export const getGameTableById = asyncHandler(async (req, res) => {
 
 export const joinGameTable = asyncHandler(async (req, res) => {
   const { gameTableId } = req.params;
-  const joinedTable = await gameTableService.joinGameTable(gameTableId, req.user.id);
-  successResponse(res, { gameTable: joinedTable }, "Successfully joined the game table");
+  const joinedTable = await gameTableService.joinGameTable(
+    gameTableId,
+    req.user.id
+  );
+  successResponse(
+    res,
+    { gameTable: joinedTable },
+    "Successfully joined the game table"
+  );
 });
 
 export const requestJoinGameTable = asyncHandler(async (req, res) => {
   const { gameTableId } = req.params;
-  const joinRequest = await gameTableService.requestJoinGameTable(gameTableId, req.user.id);
+  const joinRequest = await gameTableService.requestJoinGameTable(
+    gameTableId,
+    req.user.id
+  );
   successResponse(res, { joinRequest }, "Join request submitted successfully");
 });
 
 export const respondToJoinRequest = asyncHandler(async (req, res) => {
   const { joinRequestId } = req.params;
   const { action } = req.body;
-  const updatedRequest = await gameTableService.respondToJoinRequest(joinRequestId, action, req.user.id);
+  const updatedRequest = await gameTableService.respondToJoinRequest(
+    joinRequestId,
+    action,
+    req.user.id
+  );
 
   if (global.io) {
     global.io.to(updatedRequest.playerId._id.toString()).emit("notification", {
@@ -68,7 +104,29 @@ export const respondToJoinRequest = asyncHandler(async (req, res) => {
     });
   }
 
-  successResponse(res, { joinRequest: updatedRequest }, `Join Request ${action}`);
+  successResponse(
+    res,
+    { joinRequest: updatedRequest },
+    `Join Request ${action}`
+  );
+});
+
+export const getStats = asyncHandler(async (req, res) => {
+  const activeTables = await GameTable.countDocuments({ status: "OPEN" });
+  const totalPlayers = await User.countDocuments({ role: "PLAYER" });
+  const totalGameMasters = await User.countDocuments({ role: "GAMEMASTER" });
+  const systems = await GameTable.distinct("system");
+
+  successResponse(
+    res,
+    {
+      activeTables,
+      totalPlayers,
+      totalGameMasters,
+      rpgSystems: systems,
+    },
+    "Stats fetched successfully"
+  );
 });
 
 const gameTableController = {
@@ -79,7 +137,8 @@ const gameTableController = {
   getGameTableById,
   joinGameTable,
   requestJoinGameTable,
-  respondToJoinRequest
+  respondToJoinRequest,
+  getStats,
 };
 
 export default gameTableController;

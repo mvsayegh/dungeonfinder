@@ -1,22 +1,64 @@
-  <section class="stats-section">
-    <div class="container">
-      <div class="stats-grid">
-        <div class="stat-item">
-          <div class="stat-number">500+</div>
-          <div class="stat-label">Mesas Ativas</div>
+<section class="stats-section">
+  <div class="magic-particles">
+  <span class="magic-particle" style="top: 10%; left: 15%; width: 8px; height: 8px; animation-duration: 6s; animation-delay: 0s;"></span>
+  <span class="magic-particle" style="top: 40%; left: 80%; width: 12px; height: 12px; animation-duration: 8s; animation-delay: 2s;"></span>
+  <span class="magic-particle" style="top: 70%; left: 50%; width: 6px; height: 6px; animation-duration: 7s; animation-delay: 4s;"></span>
+  <span class="magic-particle" style="top: 25%; left: 60%; width: 10px; height: 10px; animation-duration: 9s; animation-delay: 1s;"></span>
+  <span class="magic-particle" style="top: 80%; left: 30%; width: 5px; height: 5px; animation-duration: 5s; animation-delay: 3s;"></span>
+</div>
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">
+          <h2
+            *ngIf="stats?.activeTables != null; else dashActiveTables"
+            [countUp]="stats.activeTables"
+          >
+             <span class="level-up-arrow"></span>
+          </h2>
+          <ng-template #dashActiveTables> <span class="level-up-arrow"></span></ng-template>
         </div>
-        <div class="stat-item">
-          <div class="stat-number">1.2k+</div>
-          <div class="stat-label">Jogadores</div>
+        <div class="stat-label">Mesas Ativas</div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-number">
+          <h2
+            *ngIf="stats?.totalPlayers != null; else dashTotalPlayers"
+            [countUp]="stats.totalPlayers"
+          >
+             <span class="level-up-arrow"></span>
+          </h2>
+          <ng-template #dashTotalPlayers> <span class="level-up-arrow"></span></ng-template>
         </div>
-        <div class="stat-item">
-          <div class="stat-number">200+</div>
-          <div class="stat-label">Mestres</div>
+        <div class="stat-label">Jogadores</div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-number">
+          <h2
+            *ngIf="stats?.totalGameMasters != null; else dashTotalGameMasters"
+            [countUp]="stats.totalGameMasters"
+          >
+             <span class="level-up-arrow"></span>
+          </h2>
+          <ng-template #dashTotalGameMasters> <span class="level-up-arrow"></span></ng-template>
         </div>
-        <div class="stat-item">
-          <div class="stat-number">50+</div>
-          <div class="stat-label">Sistemas</div>
+        <div class="stat-label">Mestres</div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-number">
+          <h2
+            *ngIf="stats?.rpgSystems?.length != null; else dashRpgSystems"
+            [countUp]="stats.rpgSystems.length"
+          >
+             <span class="level-up-arrow"></span>
+          </h2>
+          <ng-template #dashRpgSystems> <span class="level-up-arrow"></span></ng-template>
         </div>
+        <div class="stat-label">Sistemas</div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
